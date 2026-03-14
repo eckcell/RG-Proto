@@ -1,0 +1,149 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-12-01",
+  "insuranceType": "professional_indemnity",
+  "description": "Professional Indemnity rates as percentage of fee income (in basis points) by profession type and coverage limit. 1 bp = 0.01%.",
+  "minimumPremiumCents": 50000,
+  "professionTypes": [
+    { "id": "it_consultant", "name": "IT Consultant / Software Developer" },
+    { "id": "accountant", "name": "Accountant / Auditor" },
+    { "id": "architect", "name": "Architect" },
+    { "id": "engineer", "name": "Engineer (Consulting)" },
+    { "id": "lawyer", "name": "Legal Professional" },
+    { "id": "management_consultant", "name": "Management Consultant" },
+    { "id": "marketing_agency", "name": "Marketing / Advertising Agency" },
+    { "id": "real_estate_agent", "name": "Real Estate Agent" },
+    { "id": "designer", "name": "Designer (Graphic / Interior)" },
+    { "id": "financial_adviser", "name": "Financial Adviser" }
+  ],
+  "rates": [
+    {
+      "insurerId": "tokio_marine",
+      "effectiveDate": "2025-01-01",
+      "packageName": "ProGuard PI",
+      "ratesBpByProfession": {
+        "it_consultant":         { "250000": 45, "500000": 65, "1000000": 95, "2000000": 140 },
+        "accountant":            { "250000": 55, "500000": 80, "1000000": 115, "2000000": 170 },
+        "architect":             { "250000": 70, "500000": 100, "1000000": 145, "2000000": 215 },
+        "engineer":              { "250000": 75, "500000": 108, "1000000": 155, "2000000": 230 },
+        "lawyer":                { "250000": 80, "500000": 115, "1000000": 165, "2000000": 245 },
+        "management_consultant": { "250000": 40, "500000": 58, "1000000": 85, "2000000": 125 },
+        "marketing_agency":      { "250000": 35, "500000": 50, "1000000": 72, "2000000": 108 },
+        "real_estate_agent":     { "250000": 50, "500000": 72, "1000000": 105, "2000000": 155 },
+        "designer":              { "250000": 42, "500000": 60, "1000000": 88, "2000000": 130 },
+        "financial_adviser":     { "250000": 90, "500000": 130, "1000000": 188, "2000000": 280 }
+      },
+      "excessOptions": [0, 50000, 100000, 250000],
+      "excessDiscountPercent": { "0": 0, "50000": 5, "100000": 10, "250000": 15 },
+      "keyFeatures": [
+        "Negligent acts, errors and omissions",
+        "Breach of professional duty",
+        "Loss of documents and data",
+        "Defamation",
+        "Retroactive cover available"
+      ],
+      "exclusions": [
+        "Intentional wrongful acts",
+        "Bodily injury / property damage",
+        "Insolvency of the insured",
+        "Trading losses"
+      ]
+    },
+    {
+      "insurerId": "msig",
+      "effectiveDate": "2025-01-01",
+      "packageName": "MSIG ProShield",
+      "ratesBpByProfession": {
+        "it_consultant":         { "250000": 42, "500000": 62, "1000000": 90, "2000000": 135 },
+        "accountant":            { "250000": 52, "500000": 76, "1000000": 110, "2000000": 165 },
+        "architect":             { "250000": 68, "500000": 98, "1000000": 140, "2000000": 210 },
+        "engineer":              { "250000": 72, "500000": 105, "1000000": 150, "2000000": 225 },
+        "lawyer":                { "250000": 78, "500000": 112, "1000000": 160, "2000000": 240 },
+        "management_consultant": { "250000": 38, "500000": 55, "1000000": 80, "2000000": 120 },
+        "marketing_agency":      { "250000": 32, "500000": 48, "1000000": 68, "2000000": 102 },
+        "real_estate_agent":     { "250000": 48, "500000": 70, "1000000": 100, "2000000": 150 },
+        "designer":              { "250000": 40, "500000": 58, "1000000": 85, "2000000": 125 },
+        "financial_adviser":     { "250000": 88, "500000": 126, "1000000": 182, "2000000": 272 }
+      },
+      "excessOptions": [0, 50000, 100000],
+      "excessDiscountPercent": { "0": 0, "50000": 5, "100000": 8 },
+      "keyFeatures": [
+        "Negligent acts, errors and omissions",
+        "Breach of professional duty",
+        "Intellectual property infringement defence",
+        "Cyber breach notification costs",
+        "Mitigation costs coverage"
+      ],
+      "exclusions": [
+        "Deliberate fraud",
+        "Bodily injury / property damage",
+        "Warranties and guarantees",
+        "Patent infringement"
+      ]
+    },
+    {
+      "insurerId": "liberty",
+      "effectiveDate": "2025-01-01",
+      "packageName": "Liberty ProCover",
+      "ratesBpByProfession": {
+        "it_consultant":         { "250000": 40, "500000": 58, "1000000": 85, "2000000": 128 },
+        "accountant":            { "250000": 50, "500000": 72, "1000000": 105, "2000000": 158 },
+        "architect":             { "250000": 65, "500000": 95, "1000000": 136, "2000000": 205 },
+        "engineer":              { "250000": 70, "500000": 100, "1000000": 145, "2000000": 218 },
+        "lawyer":                { "250000": 75, "500000": 108, "1000000": 155, "2000000": 232 },
+        "management_consultant": { "250000": 36, "500000": 52, "1000000": 76, "2000000": 115 },
+        "marketing_agency":      { "250000": 30, "500000": 45, "1000000": 65, "2000000": 98 },
+        "real_estate_agent":     { "250000": 46, "500000": 67, "1000000": 96, "2000000": 145 },
+        "designer":              { "250000": 38, "500000": 55, "1000000": 80, "2000000": 120 },
+        "financial_adviser":     { "250000": 85, "500000": 122, "1000000": 175, "2000000": 262 }
+      },
+      "excessOptions": [0, 50000, 100000, 250000],
+      "excessDiscountPercent": { "0": 0, "50000": 5, "100000": 10, "250000": 18 },
+      "keyFeatures": [
+        "Negligent acts, errors and omissions",
+        "Breach of professional duty",
+        "Joint venture cover available",
+        "Previous acts cover",
+        "Emergency legal costs"
+      ],
+      "exclusions": [
+        "Criminal or dishonest acts",
+        "Bodily injury / property damage",
+        "Pension fund administration",
+        "War and sanctions"
+      ]
+    },
+    {
+      "insurerId": "qbe",
+      "effectiveDate": "2025-01-01",
+      "packageName": "QBE PI Protect",
+      "ratesBpByProfession": {
+        "it_consultant":         { "250000": 44, "500000": 64, "1000000": 92, "2000000": 138 },
+        "accountant":            { "250000": 54, "500000": 78, "1000000": 112, "2000000": 168 },
+        "architect":             { "250000": 72, "500000": 102, "1000000": 148, "2000000": 220 },
+        "engineer":              { "250000": 76, "500000": 110, "1000000": 158, "2000000": 235 },
+        "lawyer":                { "250000": 82, "500000": 118, "1000000": 168, "2000000": 252 },
+        "management_consultant": { "250000": 42, "500000": 60, "1000000": 88, "2000000": 130 },
+        "marketing_agency":      { "250000": 36, "500000": 52, "1000000": 74, "2000000": 112 },
+        "real_estate_agent":     { "250000": 52, "500000": 75, "1000000": 108, "2000000": 162 },
+        "designer":              { "250000": 44, "500000": 62, "1000000": 90, "2000000": 135 },
+        "financial_adviser":     { "250000": 92, "500000": 132, "1000000": 190, "2000000": 285 }
+      },
+      "excessOptions": [0, 50000, 100000],
+      "excessDiscountPercent": { "0": 0, "50000": 5, "100000": 10 },
+      "keyFeatures": [
+        "Negligent acts, errors and omissions",
+        "Breach of professional duty",
+        "Loss of documents",
+        "Dishonesty of employees",
+        "Extended reporting period"
+      ],
+      "exclusions": [
+        "Intentional wrongful acts",
+        "Bodily injury / property damage",
+        "Trading debts and liabilities",
+        "Nuclear hazard"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-12-01",
+  "insuranceType": "foreign_worker_medical",
+  "description": "Foreign Worker Medical Insurance (FWMI) rates per worker per annum (in cents) by age band and coverage tier. MOM minimum coverage: S$60,000. Age-differentiated from July 2025.",
+  "coverageTiers": [60000, 100000, 150000],
+  "ageBands": ["50_and_below", "above_50"],
+  "rates": [
+    {
+      "insurerId": "tokio_marine",
+      "effectiveDate": "2025-07-01",
+      "packageName": "WorkerCare FWMI",
+      "annualPerWorkerCents": {
+        "50_and_below": { "60000": 9500, "100000": 14200, "150000": 19800 },
+        "above_50":     { "60000": 18500, "100000": 27500, "150000": 38500 }
+      },
+      "keyFeatures": [
+        "Inpatient and day surgery coverage",
+        "Outpatient treatment (post-hospitalisation)",
+        "Emergency outpatient treatment",
+        "Medical repatriation",
+        "24-hour medical helpline",
+        "Panel clinic access"
+      ],
+      "exclusions": [
+        "Pre-existing conditions (first 12 months)",
+        "Cosmetic or elective procedures",
+        "Self-inflicted injuries",
+        "Treatment outside Singapore (unless repatriation)"
+      ]
+    },
+    {
+      "insurerId": "msig",
+      "effectiveDate": "2025-07-01",
+      "packageName": "MSIG FW MedCare",
+      "annualPerWorkerCents": {
+        "50_and_below": { "60000": 8800, "100000": 13500, "150000": 18500 },
+        "above_50":     { "60000": 17200, "100000": 26000, "150000": 36000 }
+      },
+      "keyFeatures": [
+        "Inpatient and day surgery coverage",
+        "Outpatient treatment (post-hospitalisation)",
+        "Emergency outpatient treatment",
+        "Dental emergency coverage",
+        "Online claims portal",
+        "Multi-worker discount from 10+"
+      ],
+      "exclusions": [
+        "Pre-existing conditions (first 12 months)",
+        "Non-emergency dental",
+        "Self-inflicted injuries",
+        "Alternative medicine"
+      ]
+    },
+    {
+      "insurerId": "income",
+      "effectiveDate": "2025-07-01",
+      "packageName": "Income FW Health",
+      "annualPerWorkerCents": {
+        "50_and_below": { "60000": 10200, "100000": 15000, "150000": 21000 },
+        "above_50":     { "60000": 19800, "100000": 29500, "150000": 41000 }
+      },
+      "keyFeatures": [
+        "Inpatient and day surgery coverage",
+        "Outpatient treatment (post-hospitalisation)",
+        "Emergency outpatient treatment",
+        "Personal accident benefit",
+        "Repatriation expenses",
+        "Complimentary health screening"
+      ],
+      "exclusions": [
+        "Pre-existing conditions (first 12 months)",
+        "Cosmetic procedures",
+        "Self-inflicted injuries",
+        "HIV/AIDS treatment"
+      ]
+    },
+    {
+      "insurerId": "liberty",
+      "effectiveDate": "2025-07-01",
+      "packageName": "Liberty FW Med",
+      "annualPerWorkerCents": {
+        "50_and_below": { "60000": 8500, "100000": 12800, "150000": 17800 },
+        "above_50":     { "60000": 16500, "100000": 25000, "150000": 34500 }
+      },
+      "keyFeatures": [
+        "Inpatient and day surgery coverage",
+        "Outpatient treatment (post-hospitalisation)",
+        "Emergency outpatient treatment",
+        "Co-payment: 75% insurer / 25% employer above S$15K",
+        "Compassionate visits",
+        "Lowest premiums for young workers"
+      ],
+      "exclusions": [
+        "Pre-existing conditions (first 12 months)",
+        "Elective cosmetic surgery",
+        "Self-inflicted injuries",
+        "Injuries under influence of alcohol/drugs"
+      ]
+    }
+  ]
+}

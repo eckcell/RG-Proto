@@ -1,0 +1,399 @@
+{
+  "version": "2.0.0",
+  "lastUpdated": "2024-01-01",
+  "description": "Base package premiums for F&B business types. All premiums in cents, inclusive of 9% GST.",
+
+  "packages": [
+    {
+      "insurerId": "msig",
+      "productName": "Business Plus",
+      "tiers": [
+        {
+          "id": "msig_office",
+          "name": "Office / Service",
+          "description": "Office-based and service businesses",
+          "basePremiumCents": 37769,
+          "baseCoverage": {
+            "fireContents": { "sumInsuredCents": 7500000, "description": "Fire & Extraneous Perils (Contents)" },
+            "theft": { "sumInsuredCents": 2500000, "description": "Theft & Hold-up (First Loss Basis)" },
+            "businessInterruption": { "dailyBenefitCents": 25000, "maxDays": 60, "description": "S$250/day up to 60 days" },
+            "wica": { "headcount": 4, "maxOutdoor": 1, "description": "4 employees (max 1 outdoor)" },
+            "publicLiability": { "limitCents": 25000000, "description": "S$250,000 per occurrence" },
+            "money": { "transitCents": 300000, "premisesCents": 300000, "description": "S$3,000 transit / S$3,000 premises" },
+            "plateGlass": { "limitCents": 250000, "description": "S$2,500" },
+            "personalAccident": { "limitCents": 3000000, "description": "S$30,000 per person" }
+          }
+        },
+        {
+          "id": "msig_retail",
+          "name": "Retail",
+          "description": "Retail shops and trading businesses",
+          "basePremiumCents": 49786,
+          "baseCoverage": {
+            "fireContents": { "sumInsuredCents": 7500000, "description": "Fire & Extraneous Perils (Contents)" },
+            "theft": { "sumInsuredCents": 2500000, "description": "Theft & Hold-up (First Loss Basis)" },
+            "businessInterruption": { "dailyBenefitCents": 25000, "maxDays": 60, "description": "S$250/day up to 60 days" },
+            "wica": { "headcount": 4, "maxOutdoor": 1, "description": "4 employees (max 1 outdoor)" },
+            "publicLiability": { "limitCents": 25000000, "description": "S$250,000 per occurrence" },
+            "money": { "transitCents": 300000, "premisesCents": 300000, "description": "S$3,000 transit / S$3,000 premises" },
+            "plateGlass": { "limitCents": 250000, "description": "S$2,500" },
+            "personalAccident": { "limitCents": 3000000, "description": "S$30,000 per person" }
+          }
+        },
+        {
+          "id": "msig_fnb",
+          "name": "Food / Beverage",
+          "description": "Restaurants, cafes, food outlets",
+          "basePremiumCents": 61994,
+          "baseCoverage": {
+            "fireContents": { "sumInsuredCents": 7500000, "description": "Fire & Extraneous Perils (Contents)" },
+            "theft": { "sumInsuredCents": 2500000, "description": "Theft & Hold-up (First Loss Basis)" },
+            "businessInterruption": { "dailyBenefitCents": 25000, "maxDays": 60, "description": "S$250/day up to 60 days" },
+            "wica": { "headcount": 4, "maxOutdoor": 1, "description": "4 employees (max 1 outdoor)" },
+            "publicLiability": { "limitCents": 25000000, "description": "S$250,000 per occurrence" },
+            "money": { "transitCents": 300000, "premisesCents": 300000, "description": "S$3,000 transit / S$3,000 premises" },
+            "plateGlass": { "limitCents": 250000, "description": "S$2,500" },
+            "personalAccident": { "limitCents": 3000000, "description": "S$30,000 per person" }
+          }
+        }
+      ],
+      "topUpRates": {
+        "fireContents": {
+          "ratePer10000Cents": { "office": 1308, "retail": 1962, "fnb": 2289 },
+          "description": "Additional Fire & Extraneous Perils per S$10,000"
+        },
+        "wica": {
+          "perEmployeeCents": { "office": 3815, "retail": 6322, "fnb": 9592 },
+          "description": "Additional employee per person (above base 4)"
+        },
+        "publicLiability": {
+          "perIncrementCents": { "office": 2834, "retail": 3815, "fnb": 4796 },
+          "incrementAmountCents": 25000000,
+          "description": "Additional PL per S$250,000"
+        },
+        "personalAccident": {
+          "perPersonCents": { "office": 1526, "retail": 1962, "fnb": 2834 },
+          "description": "Additional PA per S$30,000 per person"
+        }
+      },
+      "optionalCovers": [
+        {
+          "id": "all_risks_office",
+          "name": "All Risks (Office Equipment)",
+          "maxSumInsuredCents": 1000000,
+          "ratePer10000Cents": { "office": 9592, "retail": 14279, "fnb": 19075 },
+          "description": "Accidental loss/damage to office equipment"
+        },
+        {
+          "id": "fidelity",
+          "name": "Fidelity Guarantee",
+          "maxSumInsuredCents": 1000000,
+          "perEmployeeCents": 9592,
+          "description": "S$95.92 per employee"
+        },
+        {
+          "id": "deterioration_stock",
+          "name": "Deterioration of Stock",
+          "maxSumInsuredCents": 500000,
+          "ratePer5000Cents": 47960,
+          "description": "Frozen food deterioration"
+        },
+        {
+          "id": "fire_building",
+          "name": "Fire & Extraneous Perils (Building)",
+          "ratePer10000Cents": { "office": 1308, "retail": 1962, "fnb": 2289 },
+          "description": "Building cover (separate from contents)"
+        }
+      ],
+      "specialFeatures": [
+        "20% automatic increase in stock sum insured during festive seasons (CNY, Hari Raya Puasa, Deepavali, Christmas)",
+        "Free medical expenses up to S$500 for accidents to insured persons",
+        "10% No Claim Discount on renewal premiums"
+      ],
+      "keyExclusions": [
+        "Bars and discotheques",
+        "Nightclubs",
+        "Karaoke lounges and pubs",
+        "24-hour laundromats"
+      ]
+    },
+
+    {
+      "insurerId": "eq",
+      "productName": "EQ Business (Food and Beverage)",
+      "tiers": [
+        {
+          "id": "eq_stall",
+          "name": "Stall",
+          "description": "Individual stalls at food courts, coffee shops (not accessible to public after business hours)",
+          "basePremiumCents": 19620,
+          "baseCoverage": {
+            "allRisks": { "sumInsuredCents": 2000000, "excessCents": 20000, "description": "S$20,000 — contents, fixtures, renovations" },
+            "plateGlass": { "limitCents": 100000, "description": "S$1,000" },
+            "theft": { "limitCents": 2000000, "description": "S$20,000 (forcible entry)" },
+            "deteriorationStock": { "limitCents": 100000, "description": "S$1,000 refrigeration" },
+            "consequentialLoss": { "dailyBenefitCents": 10000, "maxDays": 100, "description": "S$100/day up to 100 days" },
+            "moneyTransit": { "limitCents": 100000, "description": "S$1,000" },
+            "moneyPremise": { "limitCents": 100000, "description": "S$1,000" },
+            "moneyDrawers": { "limitCents": 100000, "description": "S$1,000" },
+            "personalAccident": { "persons": 2, "deathCents": 5000000, "medicalCents": 50000, "description": "Up to 2 persons, S$50,000 each" },
+            "publicLiability": { "limitCents": 50000000, "description": "S$500,000" },
+            "foodBeverageExtension": { "limitCents": 10000000, "description": "S$100,000 (Stall plan)" },
+            "goodsInTransit": { "limitCents": 200000, "description": "S$2,000" }
+          }
+        },
+        {
+          "id": "eq_takeaway",
+          "name": "Take-Away",
+          "description": "Take-away outlets, food kiosks, delis, bakeries, confectionaries, ice-cream parlours",
+          "basePremiumCents": 30520,
+          "baseCoverage": {
+            "allRisks": { "sumInsuredCents": 5000000, "excessCents": 20000, "description": "S$50,000 — contents, fixtures, renovations" },
+            "plateGlass": { "limitCents": 500000, "description": "S$5,000" },
+            "theft": { "limitCents": 5000000, "description": "S$50,000 (forcible entry)" },
+            "deteriorationStock": { "limitCents": 200000, "description": "S$2,000" },
+            "consequentialLoss": { "dailyBenefitCents": 20000, "maxDays": 100, "description": "S$200/day up to 100 days" },
+            "moneyTransit": { "limitCents": 300000, "description": "S$3,000" },
+            "moneyPremise": { "limitCents": 300000, "description": "S$3,000" },
+            "moneyDrawers": { "limitCents": 100000, "description": "S$1,000" },
+            "personalAccident": { "persons": 2, "deathCents": 5000000, "medicalCents": 50000, "description": "Up to 2 persons, S$50,000 each" },
+            "publicLiability": { "limitCents": 50000000, "description": "S$500,000" },
+            "foodBeverageExtension": { "limitCents": null, "description": "N/A for Take-Away" },
+            "goodsInTransit": { "limitCents": 200000, "description": "S$2,000" }
+          }
+        },
+        {
+          "id": "eq_restaurant",
+          "name": "Restaurant",
+          "description": "Dining-in restaurants, eating houses, coffee houses, cafes",
+          "basePremiumCents": 38150,
+          "baseCoverage": {
+            "allRisks": { "sumInsuredCents": 10000000, "excessCents": 20000, "description": "S$100,000 — contents, fixtures, renovations" },
+            "plateGlass": { "limitCents": 500000, "description": "S$5,000" },
+            "theft": { "limitCents": 5000000, "description": "S$50,000 (forcible entry)" },
+            "deteriorationStock": { "limitCents": 500000, "description": "S$5,000" },
+            "consequentialLoss": { "dailyBenefitCents": 20000, "maxDays": 100, "description": "S$200/day up to 100 days" },
+            "moneyTransit": { "limitCents": 300000, "description": "S$3,000" },
+            "moneyPremise": { "limitCents": 300000, "description": "S$3,000" },
+            "moneyDrawers": { "limitCents": 100000, "description": "S$1,000" },
+            "moneyDirector": { "limitCents": 50000, "description": "S$500 directors residence" },
+            "personalAccident": { "persons": 2, "deathCents": 5000000, "medicalCents": 50000, "description": "Up to 2 persons, S$50,000 each" },
+            "publicLiability": { "limitCents": 50000000, "description": "S$500,000" },
+            "foodBeverageExtension": { "limitCents": 25000000, "description": "S$250,000 (Restaurant plan)" },
+            "goodsInTransit": { "limitCents": 200000, "description": "S$2,000" }
+          }
+        }
+      ],
+      "topUpRates": {
+        "allRisks": {
+          "ratePercent": 0.136,
+          "maxTopUpCents": 200000000,
+          "description": "0.136% of additional sum insured (max S$2,000,000 total)"
+        },
+        "consequentialLoss": {
+          "dailyBenefitTopUpCents": 2180,
+          "topUpRange": "S$50 to S$100 per day",
+          "grossProfitRatePercent": 0.136,
+          "grossProfitMax": 100000000,
+          "description": "S$21.80 per S$50 daily benefit; or 0.136% of gross profit (optional, max S$1M, 12 months)"
+        },
+        "moneyTransit": { "ratePercent": 0.82, "maxCents": 2000000, "description": "0.82% top-up (max S$20,000)" },
+        "moneyPremise": { "ratePercent": 0.82, "maxCents": 2000000, "description": "0.82% top-up (max S$20,000)" },
+        "personalAccident": { "perPersonCents": 3270, "maxPersons": 4, "description": "S$32.70 per additional person (max 4 total)" },
+        "publicLiability": { "perIncrementCents": 8175, "incrementCents": 25000000, "maxCents": 500000000, "description": "S$81.75 per additional S$250,000 (max S$5M)" }
+      },
+      "optionalCovers": [
+        {
+          "id": "fire_building",
+          "name": "Fire & Extraneous Perils on Building",
+          "ratePercent": 0.055,
+          "maxCents": 200000000,
+          "description": "0.055% of sum insured (up to S$2,000,000)"
+        },
+        {
+          "id": "fidelity",
+          "name": "Fidelity Guarantee",
+          "perEmployeeCents": 2725,
+          "perEmployeeMax": 20,
+          "aggregateRatePercent": 0.55,
+          "aggregateMaxCents": 2000000,
+          "description": "S$27.25/employee (up to 20) OR 0.55% aggregate (max S$20,000)"
+        },
+        {
+          "id": "wica",
+          "name": "Work Injury Compensation",
+          "ratesByOccupation": {
+            "admin_management": { "ratePercent": 0.065, "description": "Administrative / Management" },
+            "sales_purchasing": { "ratePercent": 0.163, "description": "Sales / Purchasing" },
+            "kitchen_service_cashier": { "ratePercent": 0.382, "description": "Kitchen / Service / Cashier" },
+            "driver_delivery": { "ratePercent": 1.09, "description": "Driver / Delivery / Others" }
+          },
+          "commonLawExtension": 1000000000,
+          "description": "Rate applied to estimated annual wages per occupation class"
+        }
+      ],
+      "specialFeatures": [
+        "Automatic 100% increase in sum insured for stock during weekends and public holidays",
+        "Personal Accident (Assault) cover for 2 employees at S$10,000 each",
+        "Poisoning-related closure covered under Consequential Loss"
+      ],
+      "keyExclusions": [
+        "Caterers or any form of catering",
+        "Bars and discotheques",
+        "Nightclubs",
+        "Karaoke lounges and pubs",
+        "Mobile kiosks",
+        "Push-carts",
+        "Wet/Dry markets",
+        "Hawker centres",
+        "Floating restaurant"
+      ]
+    },
+
+    {
+      "insurerId": "eq",
+      "productName": "EQ Business (Pubs, Bars & Lounge)",
+      "tiers": [
+        {
+          "id": "eq_pub",
+          "name": "Pubs, Bars & Lounge",
+          "description": "Wet and dry pubs, wine bars, pubs and bars with late night licence/entertainment",
+          "basePremiumCents": 52320,
+          "baseCoverage": {
+            "allRisks": { "sumInsuredCents": 10000000, "excessCents": 50000, "maliciousExcessPercent": 10, "maliciousMinCents": 50000, "description": "S$100,000 — S$500 excess, malicious damage 10% min S$500" },
+            "plateGlass": { "limitCents": 500000, "description": "S$5,000" },
+            "theft": { "limitCents": 5000000, "description": "S$50,000 (forcible entry)" },
+            "deteriorationStock": { "limitCents": 500000, "description": "S$5,000" },
+            "consequentialLoss": { "dailyBenefitCents": 20000, "maxDays": 100, "description": "S$200/day up to 100 days" },
+            "moneyTransit": { "limitCents": 300000, "description": "S$3,000" },
+            "moneyPremise": { "limitCents": 300000, "description": "S$3,000" },
+            "moneyDrawers": { "limitCents": 300000, "description": "S$3,000" },
+            "moneyDirector": { "limitCents": 50000, "description": "S$500" },
+            "personalAccident": { "persons": 2, "deathCents": 5000000, "medicalCents": 50000, "assaultCents": 1000000, "description": "Up to 2 persons, PA (Assault) S$10,000 each" },
+            "publicLiability": { "limitCents": 50000000, "description": "S$500,000" },
+            "foodBeverageExtension": { "limitCents": 10000000, "description": "S$100,000" },
+            "goodsInTransit": { "limitCents": 200000, "description": "S$2,000" }
+          }
+        }
+      ],
+      "topUpRates": {
+        "allRisks": {
+          "ratePercent": 0.218,
+          "maxTopUpCents": 100000000,
+          "description": "0.218% of additional sum insured (max S$1,000,000 total)"
+        },
+        "consequentialLoss": {
+          "dailyBenefitTopUpCents": 2180,
+          "topUpRange": "S$50 to S$100 per day",
+          "grossProfitRatePercent": 0.218,
+          "grossProfitMax": 100000000,
+          "description": "S$21.80 per S$50 daily benefit; or 0.218% of gross profit (optional, max S$1M, 12 months)"
+        },
+        "moneyTransit": { "ratePercent": 1.09, "maxCents": 2000000, "description": "1.09% top-up (max S$20,000)" },
+        "moneyPremise": { "ratePercent": 1.09, "maxCents": 2000000, "description": "1.09% top-up (max S$20,000)" },
+        "personalAccident": { "perPersonCents": 3270, "maxPersons": 4, "description": "S$32.70 per additional person (max 4 total)" },
+        "publicLiability": { "perIncrementCents": 8175, "incrementCents": 25000000, "maxCents": 500000000, "description": "S$81.75 per additional S$250,000 (max S$5M)" }
+      },
+      "optionalCovers": [
+        {
+          "id": "fidelity",
+          "name": "Fidelity Guarantee",
+          "perEmployeeCents": 2725,
+          "perEmployeeMax": 20,
+          "aggregateRatePercent": 0.55,
+          "aggregateMaxCents": 2000000,
+          "description": "S$27.25/employee (up to 20) OR 0.55% aggregate (max S$20,000)"
+        },
+        {
+          "id": "wica",
+          "name": "Work Injury Compensation",
+          "ratesByWageBand": {
+            "non_manual_low": { "wageMaxCents": 3000000, "perEmployeeCents": 3270, "description": "Non-manual, annual earning ≤ S$30,000" },
+            "non_manual_high": { "wageMinCents": 3000000, "wageMaxCents": 7500000, "perEmployeeCents": 5450, "description": "Non-manual, annual earning > S$30,000 to S$75,000" },
+            "manual_low": { "wageMaxCents": 3000000, "perEmployeeCents": 6540, "description": "Manual, annual earning ≤ S$30,000" },
+            "manual_high": { "wageMinCents": 3000000, "wageMaxCents": 7500000, "perEmployeeCents": 13080, "description": "Manual, annual earning > S$30,000 to S$75,000" },
+            "driver_delivery": { "wageMaxCents": 5000000, "perEmployeeCents": 21800, "description": "Driver / Delivery, annual earning ≤ S$50,000" }
+          },
+          "commonLawExtension": 1000000000,
+          "description": "Per-employee flat rate by occupation class and wage band"
+        }
+      ],
+      "specialFeatures": [
+        "Temporary 20% increase in stock-in-trade during 2 weeks prior to festive holidays",
+        "Extended cover for outdoor display areas authorised by landlord",
+        "Multiple outlets discount: 5% on 2nd outlet, 10% on 3rd onwards"
+      ],
+      "keyExclusions": [
+        "Caterers or any form of catering",
+        "Wet food and entertainment led with heavy entertainment such as nightclubs and discotheques"
+      ]
+    },
+
+    {
+      "insurerId": "liberty",
+      "productName": "CafeCare (Restaurant)",
+      "tiers": [
+        {
+          "id": "liberty_restaurant",
+          "name": "Restaurant",
+          "description": "Restaurants with dine-in service",
+          "basePremiumCents": null,
+          "basePremiumNote": "Type of Plan to be selected — contact Liberty for base premium",
+          "baseCoverage": null
+        }
+      ],
+      "topUpRates": {
+        "allRisks": {
+          "ratePer25000Cents": 5995,
+          "excessCents": 30000,
+          "excessExclusions": "fire, lightning, burglary",
+          "description": "S$59.95 per S$25,000 — Excess S$300 each & every loss except fire/lightning/burglary"
+        },
+        "moneyTransit": { "ratePer500Cents": 600, "description": "S$6.00 per S$500" },
+        "moneyPremise": { "ratePer500Cents": 600, "description": "S$6.00 per S$500" },
+        "moneyLockedSafe": { "ratePer500Cents": 600, "description": "S$6.00 per S$500" },
+        "moneyLockedDrawer": { "ratePer500Cents": 600, "description": "S$6.00 per S$500" },
+        "publicLiability": {
+          "ratePer500000Cents": 5995,
+          "description": "S$59.95 per S$500,000 (any one accident / unlimited any one period)"
+        },
+        "foodBeverageExtension": {
+          "ratePer50000Cents": 2998,
+          "description": "S$29.98 per S$50,000 (any one loss and in aggregate)"
+        }
+      },
+      "optionalCovers": [
+        {
+          "id": "wica",
+          "name": "Work Injury Compensation",
+          "ratesByWageBand": {
+            "non_manual_low": { "wageMaxCents": 3000000, "perEmployeeCents": 3597, "description": "Non-manual, annual earning ≤ S$30,000" },
+            "non_manual_high": { "wageMinCents": 3000000, "wageMaxCents": 7500000, "perEmployeeCents": 6595, "description": "Non-manual, annual earning > S$30,000 to S$75,000" },
+            "manual_low": { "wageMaxCents": 3000000, "perEmployeeCents": 9592, "description": "Manual, annual earning ≤ S$30,000" },
+            "manual_high": { "wageMinCents": 3000000, "wageMaxCents": 7500000, "perEmployeeCents": 13189, "description": "Manual, annual earning > S$30,000 to S$75,000" },
+            "driver_delivery": { "wageMaxCents": 5000000, "perEmployeeCents": 23980, "description": "Driver / Dispatch / Delivery, annual earning ≤ S$50,000" }
+          },
+          "description": "Per-employee flat rate by occupation class and wage band (inc GST)"
+        },
+        {
+          "id": "fidelity",
+          "name": "Fidelity Guarantee",
+          "description": "By occupation and number of employees"
+        },
+        {
+          "id": "deterioration_stock",
+          "name": "Deterioration of Stocks",
+          "description": "By sum insured"
+        }
+      ],
+      "specialFeatures": [
+        "Shopping mall location factor considered in underwriting",
+        "SDIC (Singapore Deposit Insurance Corporation) protected"
+      ],
+      "keyExclusions": [
+        "Workers doing manual work outside insured premises (other than delivery staff)",
+        "Workers involved in 2-wheelers during course of work"
+      ]
+    }
+  ]
+}

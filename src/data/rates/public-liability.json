@@ -1,0 +1,138 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-12-01",
+  "insuranceType": "public_liability",
+  "description": "Public Liability rates by industry risk group and coverage limit. Annual premium in cents.",
+  "rates": [
+    {
+      "insurerId": "tokio_marine",
+      "effectiveDate": "2025-01-01",
+      "packageName": "BizLiability Shield",
+      "annualPremiumCents": {
+        "low":       { "500000": 18000, "1000000": 28000, "2000000": 42000, "5000000": 72000 },
+        "medium":    { "500000": 28000, "1000000": 42000, "2000000": 62000, "5000000": 105000 },
+        "high":      { "500000": 45000, "1000000": 68000, "2000000": 98000, "5000000": 168000 },
+        "very_high": { "500000": 68000, "1000000": 102000, "2000000": 148000, "5000000": 250000 }
+      },
+      "excessOptions": [0, 25000, 50000, 100000],
+      "excessDiscountPercent": { "0": 0, "25000": 5, "50000": 10, "100000": 15 },
+      "keyFeatures": [
+        "Bodily injury to third parties",
+        "Property damage to third parties",
+        "Legal costs and expenses",
+        "Products liability included",
+        "Worldwide coverage available"
+      ],
+      "exclusions": [
+        "Professional negligence",
+        "Pollution and contamination",
+        "Contractual liability",
+        "Motor vehicle liability"
+      ]
+    },
+    {
+      "insurerId": "msig",
+      "effectiveDate": "2025-01-01",
+      "packageName": "SME Liability Guard",
+      "annualPremiumCents": {
+        "low":       { "500000": 16000, "1000000": 26000, "2000000": 40000, "5000000": 70000 },
+        "medium":    { "500000": 26000, "1000000": 40000, "2000000": 58000, "5000000": 100000 },
+        "high":      { "500000": 42000, "1000000": 65000, "2000000": 95000, "5000000": 162000 },
+        "very_high": { "500000": 65000, "1000000": 98000, "2000000": 142000, "5000000": 242000 }
+      },
+      "excessOptions": [0, 25000, 50000],
+      "excessDiscountPercent": { "0": 0, "25000": 5, "50000": 8 },
+      "keyFeatures": [
+        "Bodily injury to third parties",
+        "Property damage to third parties",
+        "Legal costs and expenses",
+        "Tenants' liability add-on",
+        "Cross-liability coverage"
+      ],
+      "exclusions": [
+        "Professional negligence",
+        "Asbestos-related claims",
+        "Wilful misconduct",
+        "Motor vehicle liability"
+      ]
+    },
+    {
+      "insurerId": "income",
+      "effectiveDate": "2025-01-01",
+      "packageName": "BizSafe Liability",
+      "annualPremiumCents": {
+        "low":       { "500000": 19000, "1000000": 30000, "2000000": 45000, "5000000": 78000 },
+        "medium":    { "500000": 30000, "1000000": 45000, "2000000": 65000, "5000000": 112000 },
+        "high":      { "500000": 48000, "1000000": 72000, "2000000": 105000, "5000000": 180000 },
+        "very_high": { "500000": 72000, "1000000": 108000, "2000000": 155000, "5000000": 265000 }
+      },
+      "excessOptions": [0, 50000, 100000],
+      "excessDiscountPercent": { "0": 0, "50000": 8, "100000": 12 },
+      "keyFeatures": [
+        "Bodily injury to third parties",
+        "Property damage to third parties",
+        "Legal costs and expenses",
+        "Food and beverage poisoning covered",
+        "Complimentary risk survey"
+      ],
+      "exclusions": [
+        "Professional negligence",
+        "Pollution and contamination",
+        "Product recall costs",
+        "Cyber liability"
+      ]
+    },
+    {
+      "insurerId": "liberty",
+      "effectiveDate": "2025-01-01",
+      "packageName": "CombiShield PL",
+      "annualPremiumCents": {
+        "low":       { "500000": 15000, "1000000": 24000, "2000000": 38000, "5000000": 65000 },
+        "medium":    { "500000": 24000, "1000000": 38000, "2000000": 55000, "5000000": 95000 },
+        "high":      { "500000": 40000, "1000000": 62000, "2000000": 90000, "5000000": 155000 },
+        "very_high": { "500000": 62000, "1000000": 95000, "2000000": 138000, "5000000": 235000 }
+      },
+      "excessOptions": [0, 25000, 50000, 100000],
+      "excessDiscountPercent": { "0": 0, "25000": 5, "50000": 10, "100000": 15 },
+      "keyFeatures": [
+        "Bodily injury to third parties",
+        "Property damage to third parties",
+        "Legal costs and expenses",
+        "Adventitious cover for sub-contractors",
+        "Multi-location coverage"
+      ],
+      "exclusions": [
+        "Professional negligence",
+        "Third-party product liability (unless opted)",
+        "Contractual liability",
+        "Cyber-related claims"
+      ]
+    },
+    {
+      "insurerId": "qbe",
+      "effectiveDate": "2025-01-01",
+      "packageName": "QBE Public Liability",
+      "annualPremiumCents": {
+        "low":       { "500000": 17000, "1000000": 27000, "2000000": 41000, "5000000": 71000 },
+        "medium":    { "500000": 27000, "1000000": 41000, "2000000": 60000, "5000000": 103000 },
+        "high":      { "500000": 44000, "1000000": 67000, "2000000": 97000, "5000000": 165000 },
+        "very_high": { "500000": 67000, "1000000": 100000, "2000000": 145000, "5000000": 248000 }
+      },
+      "excessOptions": [0, 50000],
+      "excessDiscountPercent": { "0": 0, "50000": 7 },
+      "keyFeatures": [
+        "Bodily injury to third parties",
+        "Property damage to third parties",
+        "Legal costs and expenses",
+        "Worldwide jurisdiction available",
+        "Defamation and slander coverage"
+      ],
+      "exclusions": [
+        "Professional negligence",
+        "Pollution and contamination",
+        "War and terrorism",
+        "Nuclear hazard"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-12-01",
+  "insuranceType": "wica",
+  "description": "WICA rates per S$100 payroll, by risk category and employee type (manual/non-manual). Rates in basis points (1 bp = 0.01%). Values are rate per S$100 of payroll in cents.",
+  "minimumPremiumCents": 25000,
+  "rates": [
+    {
+      "insurerId": "tokio_marine",
+      "effectiveDate": "2025-01-01",
+      "packageName": "WICA Essential",
+      "ratesPer100Payroll": {
+        "low":       { "manual": 65, "non_manual": 25 },
+        "medium":    { "manual": 110, "non_manual": 40 },
+        "high":      { "manual": 180, "non_manual": 55 },
+        "very_high": { "manual": 290, "non_manual": 75 }
+      },
+      "keyFeatures": [
+        "Death benefit up to S$269,000",
+        "Permanent incapacity up to S$346,000",
+        "Medical expenses up to S$53,000",
+        "Temporary incapacity wage compensation",
+        "24/7 claims hotline"
+      ],
+      "exclusions": [
+        "Self-inflicted injuries",
+        "Injuries under influence of drugs/alcohol",
+        "Injuries outside scope of employment"
+      ]
+    },
+    {
+      "insurerId": "msig",
+      "effectiveDate": "2025-01-01",
+      "packageName": "BizShield WICA",
+      "ratesPer100Payroll": {
+        "low":       { "manual": 60, "non_manual": 22 },
+        "medium":    { "manual": 105, "non_manual": 38 },
+        "high":      { "manual": 175, "non_manual": 52 },
+        "very_high": { "manual": 285, "non_manual": 70 }
+      },
+      "keyFeatures": [
+        "Death benefit up to S$269,000",
+        "Permanent incapacity up to S$346,000",
+        "Medical expenses up to S$53,000",
+        "Rehabilitation expenses included",
+        "Online claims submission"
+      ],
+      "exclusions": [
+        "Self-inflicted injuries",
+        "Pre-existing conditions",
+        "Injuries outside scope of employment"
+      ]
+    },
+    {
+      "insurerId": "income",
+      "effectiveDate": "2025-01-01",
+      "packageName": "WICA Protect",
+      "ratesPer100Payroll": {
+        "low":       { "manual": 70, "non_manual": 28 },
+        "medium":    { "manual": 115, "non_manual": 42 },
+        "high":      { "manual": 190, "non_manual": 58 },
+        "very_high": { "manual": 310, "non_manual": 80 }
+      },
+      "keyFeatures": [
+        "Death benefit up to S$269,000",
+        "Permanent incapacity up to S$346,000",
+        "Medical expenses up to S$53,000",
+        "Compassionate visits coverage",
+        "Free risk assessment"
+      ],
+      "exclusions": [
+        "Self-inflicted injuries",
+        "Injuries under influence of drugs/alcohol",
+        "Non-work-related injuries"
+      ]
+    },
+    {
+      "insurerId": "liberty",
+      "effectiveDate": "2025-01-01",
+      "packageName": "WorkCare WICA",
+      "ratesPer100Payroll": {
+        "low":       { "manual": 58, "non_manual": 20 },
+        "medium":    { "manual": 100, "non_manual": 36 },
+        "high":      { "manual": 170, "non_manual": 50 },
+        "very_high": { "manual": 280, "non_manual": 68 }
+      },
+      "keyFeatures": [
+        "Death benefit up to S$269,000",
+        "Permanent incapacity up to S$346,000",
+        "Medical expenses up to S$53,000",
+        "No minimum payroll requirement",
+        "Multi-year discount available"
+      ],
+      "exclusions": [
+        "Self-inflicted injuries",
+        "Injuries from illegal acts",
+        "Pre-existing conditions"
+      ]
+    },
+    {
+      "insurerId": "qbe",
+      "effectiveDate": "2025-01-01",
+      "packageName": "WICA Plus",
+      "ratesPer100Payroll": {
+        "low":       { "manual": 62, "non_manual": 23 },
+        "medium":    { "manual": 108, "non_manual": 39 },
+        "high":      { "manual": 185, "non_manual": 56 },
+        "very_high": { "manual": 300, "non_manual": 78 }
+      },
+      "keyFeatures": [
+        "Death benefit up to S$269,000",
+        "Permanent incapacity up to S$346,000",
+        "Medical expenses up to S$53,000",
+        "Claims management support",
+        "Workplace safety resources"
+      ],
+      "exclusions": [
+        "Self-inflicted injuries",
+        "Injuries under influence of drugs/alcohol",
+        "Willful misconduct"
+      ]
+    }
+  ]
+}

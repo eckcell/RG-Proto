@@ -1,0 +1,46 @@
+{
+  "version": "2.0.0",
+  "lastUpdated": "2024-01-01",
+  "description": "Real Singapore insurers for F&B SME package comparison",
+  "insurers": [
+    {
+      "id": "msig",
+      "name": "MSIG Insurance",
+      "fullName": "MSIG Insurance (Singapore) Pte. Ltd.",
+      "address": "4 Shenton Way, #21-01 SGX Centre 2, Singapore 068807",
+      "phone": "+65 6827 7888",
+      "regNo": "200412212G",
+      "website": "https://www.msig.com.sg",
+      "logoPath": "/insurers/msig.png",
+      "productName": "Business Plus",
+      "productCode": "ABU070124",
+      "effectiveDate": "2024-01-01"
+    },
+    {
+      "id": "eq",
+      "name": "EQ Insurance",
+      "fullName": "EQ Insurance Company Limited",
+      "address": "77 Robinson Road #12-01 Robinson 77, Singapore 068896",
+      "phone": "+65 6223 9433",
+      "regNo": "1978-00490-N",
+      "website": "https://www.eqinsurance.com.sg",
+      "logoPath": "/insurers/eq.png",
+      "productName": "EQ Business",
+      "productCode": "FGP2401-Ver3.0",
+      "effectiveDate": "2024-05-29"
+    },
+    {
+      "id": "liberty",
+      "name": "Liberty Insurance",
+      "fullName": "Liberty Specialty Markets Singapore Pte. Limited",
+      "address": "One Raffles Quay #40-01 North Tower, Singapore 048583",
+      "phone": "1800-LIBERTY (542 3789)",
+      "regNo": "201538069C",
+      "website": "https://www.libertyinsurance.com.sg",
+      "logoPath": "/insurers/liberty.png",
+      "productName": "CafeCare",
+      "productCode": "JAN 2024",
+      "effectiveDate": "2024-01-01"
+    }
+  ]
+}

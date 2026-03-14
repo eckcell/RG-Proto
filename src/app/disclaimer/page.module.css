@@ -1,0 +1,65 @@
+/* ============================================
+   Disclaimer Page Styles
+   ============================================ */
+
+.disclaimerPage {
+  padding: var(--space-8) 0 var(--space-16);
+}
+
+.disclaimerPage h1 {
+  font-size: var(--font-size-3xl);
+  color: var(--color-text);
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-4);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.section {
+  margin-bottom: var(--space-8);
+}
+
+.section h2 {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-3);
+}
+
+.section p {
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-3);
+}
+
+.section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.section ul li {
+  position: relative;
+  padding-left: var(--space-6);
+  margin-bottom: var(--space-2);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+.section ul li::before {
+  content: "•";
+  position: absolute;
+  left: var(--space-2);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.alertBox {
+  background-color: var(--color-warning-bg);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+  margin-bottom: var(--space-4);
+}
+
+.alertBox p {
+  color: var(--color-text);
+  margin-bottom: 0;
+}
