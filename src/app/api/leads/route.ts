@@ -30,18 +30,25 @@ export async function POST(req: Request) {
     const quotesJsonString = JSON.stringify(quotes);
 
     // 3. Save lead to PostgreSQL / SQLite database via Prisma
-    const newLead = await prisma.lead.create({
-      data: {
-        companyName: parsedData.companyName,
-        uen: parsedData.uen,
-        businessType: parsedData.businessType,
-        additionalEmployees: parsedData.additionalEmployees,
-        contactName: parsedData.contactName,
-        contactEmail: parsedData.contactEmail,
-        contactPhone: parsedData.contactPhone,
-        quoteData: quotesJsonString,
-      },
-    });
+    let leadId: string | undefined;
+    try {
+      const newLead = await prisma.lead.create({
+        data: {
+          companyName: parsedData.companyName,
+          uen: parsedData.uen,
+          businessType: parsedData.businessType,
+          additionalEmployees: parsedData.additionalEmployees,
+          contactName: parsedData.contactName,
+          contactEmail: parsedData.contactEmail,
+          contactPhone: parsedData.contactPhone,
+          quoteData: quotesJsonString,
+        },
+      });
+      leadId = newLead.id;
+    } catch (dbError: any) {
+      console.error("Database save failed (expected on Vercel with SQLite):", dbError.message);
+      // We continue here so the user can still see their results
+    }
 
     // 4. Email Dispatch (Placeholder for actual Resend Integration)
     // Uncomment when RESEND_API_KEY is configured.
@@ -64,7 +71,7 @@ export async function POST(req: Request) {
     console.log(`Email effectively sent to ${parsedData.contactEmail}`);
 
     return NextResponse.json(
-      { success: true, leadId: newLead.id, quotes },
+      { success: true, leadId, quotes },
       { status: 201 }
     );
   } catch (error: any) {
