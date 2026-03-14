@@ -217,23 +217,23 @@ function calculateEqTopUps(
 
 function calculateLibertyTopUps(
   pkg: InsurerPackage,
-  _tier: PackageTier,
+  tier: PackageTier,
   profile: FnbBusinessProfile
 ): TopUpLineItem[] {
   const items: TopUpLineItem[] = [];
-  const rates = pkg.topUpRates as Record<string, Record<string, unknown>>;
+  const rates = pkg.topUpRates as Record<string, any>;
 
   // Additional all-risks
   if (profile.additionalSumInsuredCents > 0 && rates.allRisks) {
-    const ratePer25k = rates.allRisks.ratePer25000Cents as number;
-    if (ratePer25k) {
-      const increments = Math.ceil(
-        profile.additionalSumInsuredCents / 2500000
-      ); // per S$25,000
-      const amount = ratePer25k * increments;
+    const isStall = tier.id.includes("stall");
+    const config = isStall ? rates.allRisks.stall : rates.allRisks.restaurant;
+    
+    if (config) {
+      const increments = Math.ceil(profile.additionalSumInsuredCents / config.amount);
+      const amount = config.rate * increments;
       items.push({
         name: "Additional All Risks",
-        description: `${increments} increment(s) of S$25,000`,
+        description: `${increments} increment(s) of S$${(config.amount / 100).toLocaleString()}`,
         amountCents: roundToDollar(amount),
       });
     }
@@ -241,32 +241,27 @@ function calculateLibertyTopUps(
 
   // Additional PL
   if (profile.additionalPlLimitCents > 0 && rates.publicLiability) {
-    const ratePer500k = rates.publicLiability.ratePer500000Cents as number;
-    if (ratePer500k) {
-      const increments = Math.ceil(
-        profile.additionalPlLimitCents / 50000000 // per S$500,000
-      );
-      const amount = ratePer500k * increments;
+    const config = rates.publicLiability;
+    if (config.rate && config.amount) {
+      const increments = Math.ceil(profile.additionalPlLimitCents / config.amount);
+      const amount = config.rate * increments;
       items.push({
         name: "Additional Public Liability",
-        description: `${increments} increment(s) of S$500,000`,
+        description: `${increments} increment(s) of S$${(config.amount / 100).toLocaleString()}`,
         amountCents: roundToDollar(amount),
       });
     }
   }
 
-  // Additional food & beverage extension
-  if (profile.additionalPlLimitCents > 0 && rates.foodBeverageExtension) {
-    const ratePer50k = rates.foodBeverageExtension
-      .ratePer50000Cents as number;
-    if (ratePer50k) {
-      const increments = Math.ceil(
-        profile.additionalPlLimitCents / 5000000 // per S$50,000
-      );
-      const amount = ratePer50k * increments;
-      items.push({
-        name: "Additional F&B Extension",
-        description: `${increments} increment(s) of S$50,000`,
+  // Additional Money
+  if (profile.additionalPlLimitCents > 0 && rates.money) {
+    const config = rates.money;
+    if (config.rate && config.amount) {
+      const increments = Math.ceil(profile.additionalPlLimitCents / config.amount);
+      const amount = config.rate * increments;
+       items.push({
+        name: "Additional Money Cover",
+        description: `${increments} increment(s) of S$${(config.amount / 100).toLocaleString()}`,
         amountCents: roundToDollar(amount),
       });
     }

@@ -331,64 +331,83 @@
 
     {
       "insurerId": "liberty",
-      "productName": "CafeCare (Restaurant)",
+      "productName": "CafeCare",
       "tiers": [
         {
-          "id": "liberty_plan_a",
-          "name": "Plan A",
-          "description": "Standard coverage for restaurants",
+          "id": "liberty_restaurant_a",
+          "name": "Restaurant - Plan A",
+          "description": "Standard coverage for dine-in restaurants and cafes",
           "basePremiumCents": 40766,
           "baseCoverage": {
             "allRisks": { "sumInsuredCents": 7500000, "description": "S$75,000 Property All Risks (Excess S$300)" },
-            "consequentialLoss": { "limitCents": 2000000, "description": "S$20,000 Consequential Loss" },
-            "rentalExpenses": { "limitCents": 2000000, "description": "S$20,000 Rental Expenses" },
-            "moneyTransit": { "limitCents": 300000, "description": "S$3,000 Transit/Premises (Business Hours)" },
-            "moneyPremises": { "limitCents": 300000, "description": "S$3,000 Premises (After Hours Safe)" },
-            "moneyDrawers": { "limitCents": 100000, "description": "S$1,000 Premises (Locked Drawers)" },
+            "consequentialLoss": { "limitCents": 2000000, "description": "S$20,000 Consequential Loss (3 days excess)" },
+            "rentalExpenses": { "limitCents": 500000, "description": "S$5,000 Rental Expenses" },
+            "moneyTransit": { "limitCents": 300000, "description": "S$3,000 Transit / Premises Business Hours / Safe" },
+            "moneyDrawers": { "limitCents": 100000, "description": "S$1,000 Locked Drawers" },
             "personalAccident": { "limitCents": 5000000, "description": "S$50,000 Personal Accident" },
             "publicLiability": { "limitCents": 50000000, "description": "S$500,000 Public Liability" },
-            "foodBeverageExtension": { "limitCents": 5000000, "description": "S$50,000 F&B Extension" },
-            "goodsInTransit": { "limitCents": 500000, "description": "S$5,000 Goods-in-Transit" }
+            "foodPoisoning": { "limitCents": 5000000, "description": "S$50,000 Food Poisoning Extension" },
+            "goodsInTransit": { "limitCents": 200000, "description": "S$2,000 Goods-in-Transit" }
           }
         },
         {
-          "id": "liberty_plan_b",
-          "name": "Plan B",
-          "description": "Enhanced coverage for restaurants",
+          "id": "liberty_restaurant_b",
+          "name": "Restaurant - Plan B",
+          "description": "Higher limits for larger dining establishments",
           "basePremiumCents": 58751,
           "baseCoverage": {
             "allRisks": { "sumInsuredCents": 15000000, "description": "S$150,000 Property All Risks (Excess S$300)" },
-            "consequentialLoss": { "limitCents": 3000000, "description": "S$30,000 Consequential Loss" },
-            "rentalExpenses": { "limitCents": 3000000, "description": "S$30,000 Rental Expenses" },
-            "moneyTransit": { "limitCents": 500000, "description": "S$5,000 Transit/Premises (Business Hours)" },
-            "moneyPremises": { "limitCents": 500000, "description": "S$5,000 Premises (After Hours Safe)" },
-            "moneyDrawers": { "limitCents": 200000, "description": "S$2,000 Premises (Locked Drawers)" },
+            "consequentialLoss": { "limitCents": 3000000, "description": "S$30,000 Consequential Loss (3 days excess)" },
+            "rentalExpenses": { "limitCents": 1000000, "description": "S$10,000 Rental Expenses" },
+            "moneyTransit": { "limitCents": 500000, "description": "S$5,000 Transit / Premises Business Hours / Safe" },
+            "moneyDrawers": { "limitCents": 200000, "description": "S$2,000 Locked Drawers" },
             "personalAccident": { "limitCents": 5000000, "description": "S$50,000 Personal Accident" },
             "publicLiability": { "limitCents": 100000000, "description": "S$1,000,000 Public Liability" },
-            "foodBeverageExtension": { "limitCents": 5000000, "description": "S$50,000 F&B Extension" },
-            "goodsInTransit": { "limitCents": 500000, "description": "S$5,000 Goods-in-Transit" }
+            "foodPoisoning": { "limitCents": 5000000, "description": "S$50,000 Food Poisoning Extension" },
+            "goodsInTransit": { "limitCents": 200000, "description": "S$2,000 Goods-in-Transit" }
+          }
+        },
+        {
+          "id": "liberty_stall_a",
+          "name": "Food Stall - Plan A",
+          "description": "Essential coverage for food stalls and kiosks",
+          "basePremiumCents": 22781,
+          "baseCoverage": {
+            "allRisks": { "sumInsuredCents": 1500000, "description": "S$15,000 Property All Risks (Excess S$100)" },
+            "consequentialLoss": { "limitCents": 500000, "description": "S$5,000 Consequential Loss (3 days excess)" },
+            "rentalExpenses": { "limitCents": 500000, "description": "S$5,000 Rental Expenses" },
+            "moneyTransit": { "limitCents": 150000, "description": "S$1,500 Transit / Premises Business Hours / Safe" },
+            "personalAccident": { "limitCents": 5000000, "description": "S$50,000 Personal Accident" },
+            "publicLiability": { "limitCents": 25000000, "description": "S$250,000 Public Liability" },
+            "foodPoisoning": { "limitCents": 2500000, "description": "S$25,000 Food Poisoning Extension" },
+            "goodsInTransit": { "limitCents": 100000, "description": "S$1,000 Goods-in-Transit" }
+          }
+        },
+        {
+          "id": "liberty_stall_b",
+          "name": "Food Stall - Plan B",
+          "description": "Comprehensive protection for busy food stalls",
+          "basePremiumCents": 34771,
+          "baseCoverage": {
+            "allRisks": { "sumInsuredCents": 3000000, "description": "S$30,000 Property All Risks (Excess S$100)" },
+            "consequentialLoss": { "limitCents": 1000000, "description": "S$10,000 Consequential Loss (3 days excess)" },
+            "rentalExpenses": { "limitCents": 1000000, "description": "S$10,000 Rental Expenses" },
+            "moneyTransit": { "limitCents": 300000, "description": "S$3,000 Transit / Premises Business Hours / Safe" },
+            "personalAccident": { "limitCents": 5000000, "description": "S$50,000 Personal Accident" },
+            "publicLiability": { "limitCents": 50000000, "description": "S$500,000 Public Liability" },
+            "foodPoisoning": { "limitCents": 5000000, "description": "S$50,000 Food Poisoning Extension" },
+            "goodsInTransit": { "limitCents": 200000, "description": "S$2,000 Goods-in-Transit" }
           }
         }
       ],
       "topUpRates": {
         "allRisks": {
-          "ratePer25000Cents": 5995,
-          "excessCents": 30000,
-          "excessExclusions": "fire, lightning, burglary",
-          "description": "S$59.95 per S$25,000 — Excess S$300 each & every loss except fire/lightning/burglary"
+          "restaurant": { "rate": 5995, "amount": 2500000 },
+          "stall": { "rate": 1199, "amount": 500000 },
+          "description": "S$59.95 per S$25k (Restaurant) / S$11.99 per S$5k (Stall)"
         },
-        "moneyTransit": { "ratePer500Cents": 600, "description": "S$6.00 per S$500" },
-        "moneyPremise": { "ratePer500Cents": 600, "description": "S$6.00 per S$500" },
-        "moneyLockedSafe": { "ratePer500Cents": 600, "description": "S$6.00 per S$500" },
-        "moneyLockedDrawer": { "ratePer500Cents": 600, "description": "S$6.00 per S$500" },
-        "publicLiability": {
-          "ratePer500000Cents": 5995,
-          "description": "S$59.95 per S$500,000 (any one accident / unlimited any one period)"
-        },
-        "foodBeverageExtension": {
-          "ratePer50000Cents": 2998,
-          "description": "S$29.98 per S$50,000 (any one loss and in aggregate)"
-        }
+        "money": { "rate": 600, "amount": 50000, "description": "S$6.00 per S$500" },
+        "publicLiability": { "rate": 5995, "amount": 50000000, "description": "S$59.95 per S$500,000" }
       },
       "optionalCovers": [
         {
@@ -406,21 +425,28 @@
         {
           "id": "fidelity",
           "name": "Fidelity Guarantee",
-          "description": "By occupation and number of employees"
+          "description": "Coverage for employee dishonesty"
         },
         {
           "id": "deterioration_stock",
           "name": "Deterioration of Stocks",
-          "description": "By sum insured"
+          "description": "Coverage for food spoilage due to refrigeration failure"
         }
       ],
       "specialFeatures": [
-        "Shopping mall location factor considered in underwriting",
-        "SDIC (Singapore Deposit Insurance Corporation) protected"
+        "Plate Glass covered up to S$25,000",
+        "Seasonal Increase (25%): Two weeks prior to CNY, Hari Raya Puasa, Deepavali, and Christmas",
+        "NCD: 10% on 1st renewal, 15% on 2nd and subsequent renewals",
+        "Chain Discount: 10% for 3-5 shops, 15% for 6 or more shops",
+        "Shopping mall discount (5%) and clean claims record discount available",
+        "Outdoor Refreshment/Display Areas included in All Risks and PL"
       ],
       "keyExclusions": [
-        "Workers doing manual work outside insured premises (other than delivery staff)",
-        "Workers involved in 2-wheelers during course of work"
+        "Pre-war buildings or non-brick/tile/concrete construction",
+        "Industrial/Manufacturing Complexes and Wholesale/Warehousing units",
+        "Nightclubs, Bars, Discotheques, Karaoke lounges (for stall plans)",
+        "Manual work outside insured premises (except delivery staff)",
+        "Off-site activities like onboard vessels or on-site catering"
       ]
     }
   ]
