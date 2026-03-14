@@ -6,7 +6,7 @@
   "packages": [
     {
       "insurerId": "msig",
-      "productName": "Business Plus",
+      "productName": "MSIG Business Plus",
       "tiers": [
         {
           "id": "msig_office",
