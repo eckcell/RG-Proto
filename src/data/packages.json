@@ -334,12 +334,40 @@
       "productName": "CafeCare (Restaurant)",
       "tiers": [
         {
-          "id": "liberty_restaurant",
-          "name": "Restaurant",
-          "description": "Restaurants with dine-in service",
-          "basePremiumCents": null,
-          "basePremiumNote": "Type of Plan to be selected — contact Liberty for base premium",
-          "baseCoverage": null
+          "id": "liberty_plan_a",
+          "name": "Plan A",
+          "description": "Standard coverage for restaurants",
+          "basePremiumCents": 40766,
+          "baseCoverage": {
+            "allRisks": { "sumInsuredCents": 7500000, "description": "S$75,000 Property All Risks (Excess S$300)" },
+            "consequentialLoss": { "limitCents": 2000000, "description": "S$20,000 Consequential Loss" },
+            "rentalExpenses": { "limitCents": 2000000, "description": "S$20,000 Rental Expenses" },
+            "moneyTransit": { "limitCents": 300000, "description": "S$3,000 Transit/Premises (Business Hours)" },
+            "moneyPremises": { "limitCents": 300000, "description": "S$3,000 Premises (After Hours Safe)" },
+            "moneyDrawers": { "limitCents": 100000, "description": "S$1,000 Premises (Locked Drawers)" },
+            "personalAccident": { "limitCents": 5000000, "description": "S$50,000 Personal Accident" },
+            "publicLiability": { "limitCents": 50000000, "description": "S$500,000 Public Liability" },
+            "foodBeverageExtension": { "limitCents": 5000000, "description": "S$50,000 F&B Extension" },
+            "goodsInTransit": { "limitCents": 500000, "description": "S$5,000 Goods-in-Transit" }
+          }
+        },
+        {
+          "id": "liberty_plan_b",
+          "name": "Plan B",
+          "description": "Enhanced coverage for restaurants",
+          "basePremiumCents": 58751,
+          "baseCoverage": {
+            "allRisks": { "sumInsuredCents": 15000000, "description": "S$150,000 Property All Risks (Excess S$300)" },
+            "consequentialLoss": { "limitCents": 3000000, "description": "S$30,000 Consequential Loss" },
+            "rentalExpenses": { "limitCents": 3000000, "description": "S$30,000 Rental Expenses" },
+            "moneyTransit": { "limitCents": 500000, "description": "S$5,000 Transit/Premises (Business Hours)" },
+            "moneyPremises": { "limitCents": 500000, "description": "S$5,000 Premises (After Hours Safe)" },
+            "moneyDrawers": { "limitCents": 200000, "description": "S$2,000 Premises (Locked Drawers)" },
+            "personalAccident": { "limitCents": 5000000, "description": "S$50,000 Personal Accident" },
+            "publicLiability": { "limitCents": 100000000, "description": "S$1,000,000 Public Liability" },
+            "foodBeverageExtension": { "limitCents": 5000000, "description": "S$50,000 F&B Extension" },
+            "goodsInTransit": { "limitCents": 500000, "description": "S$5,000 Goods-in-Transit" }
+          }
         }
       ],
       "topUpRates": {
