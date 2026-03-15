@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fnbProfileSchema, type FnbProfileInput } from "@/engine/schema";
 import styles from "./FnbProfileForm.module.css";
@@ -42,7 +41,8 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
       contactEmail: "",
       contactPhone: "",
     },
-    reValidateMode: "onSubmit",
+    reValidateMode: "onChange",
+    mode: "all",
   });
 
   const {
@@ -356,10 +356,10 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
               <input
                 id="contactName"
                 {...register("contactName")}
-                className={errors.contactName ? styles.inputError : ""}
+                className={(touchedFields.contactName || isSubmitted) && errors.contactName ? styles.inputError : ""}
                 placeholder="e.g. John Doe"
               />
-              {errors.contactName && (
+              {(touchedFields.contactName || isSubmitted) && errors.contactName && (
                   <span className={styles.errorText}>
                     {errors.contactName.message}
                   </span>
@@ -372,10 +372,10 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
                 id="contactEmail"
                 type="email"
                 {...register("contactEmail")}
-                className={errors.contactEmail ? styles.inputError : ""}
+                className={(touchedFields.contactEmail || isSubmitted) && errors.contactEmail ? styles.inputError : ""}
                 placeholder="e.g. john@example.com"
               />
-              {errors.contactEmail && (
+              {(touchedFields.contactEmail || isSubmitted) && errors.contactEmail && (
                   <span className={styles.errorText}>
                     {errors.contactEmail.message}
                   </span>
@@ -391,11 +391,11 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
                   type="text"
                   maxLength={8}
                   {...register("contactPhone")}
-                  className={errors.contactPhone ? styles.inputError : ""}
+                  className={(touchedFields.contactPhone || isSubmitted) && errors.contactPhone ? styles.inputError : ""}
                   placeholder="e.g. 91234567"
                 />
               </div>
-              {errors.contactPhone && (
+              {(touchedFields.contactPhone || isSubmitted) && errors.contactPhone && (
                   <span className={styles.errorText}>
                     {errors.contactPhone.message}
                   </span>
