@@ -9,7 +9,7 @@ const insurerPackageSchema = z.object({
   insurerId: z.string(),
   productName: z.string(),
   tiers: z.array(z.any()),
-  topUpRates: z.record(z.any()),
+  topUpRates: z.record(z.string(), z.any()),
   optionalCovers: z.array(z.any()),
   specialFeatures: z.array(z.string()),
   keyExclusions: z.array(z.string()),
