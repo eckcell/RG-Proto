@@ -16,11 +16,15 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        const email = credentials.email.toLowerCase().trim();
+        console.log(`Attempting login for: ${email}`);
+
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { email }
         });
 
         if (!user) {
+          console.log(`Auth failed: User not found for email ${email}`);
           return null;
         }
 

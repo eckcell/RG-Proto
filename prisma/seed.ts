@@ -4,13 +4,13 @@ import bcrypt from 'bcrypt'
 const prisma = new PrismaClient()
 
 async function main() {
-  const email = process.env.ADMIN_EMAIL
-  const password = process.env.ADMIN_PASSWORD
-
-  if (!email || !password) {
+  if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) {
     console.log('Skipping admin seed: ADMIN_EMAIL or ADMIN_PASSWORD not set.')
     return
   }
+
+  const email = process.env.ADMIN_EMAIL.toLowerCase().trim()
+  const password = process.env.ADMIN_PASSWORD.trim()
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
