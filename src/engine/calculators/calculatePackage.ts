@@ -330,6 +330,7 @@ export function calculatePackageQuote(
   pkg: InsurerPackage,
   tier: PackageTier,
   insurerName: string,
+  insurerLogoPath: string,
   profile: FnbBusinessProfile
 ): PackageCalculatorResult {
   // Guard: tier must have a base premium
@@ -386,6 +387,7 @@ export function calculatePackageQuote(
   const quote: PackageQuoteResult = {
     insurerId: pkg.insurerId,
     insurerName,
+    insurerLogoPath,
     productName: pkg.productName,
     tierId: tier.id,
     tierName: tier.name,

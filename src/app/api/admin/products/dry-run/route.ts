@@ -56,7 +56,7 @@ export async function POST(req: Request) {
           wicaEmployees: [],
         };
 
-        const calc = calculatePackageQuote(pkg as any, tier, insurerName, mockProfile as any);
+        const calc = calculatePackageQuote(pkg as any, tier, insurerName, "", mockProfile as any);
         return {
           leadId: lead.id,
           company: lead.companyName,

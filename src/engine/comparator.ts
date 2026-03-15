@@ -64,6 +64,7 @@ export async function comparePackages(
         pkg,
         tier,
         insurerName,
+        insurerLogoPath,
         profile
       );
 
