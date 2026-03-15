@@ -1,7 +1,6 @@
 "use client";
 
 import type { PackageComparison, PackageQuoteResult } from "@/engine/types";
-import Image from "next/image";
 import { useRef, useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -117,7 +116,7 @@ export function QuoteComparison({ comparison }: Props) {
             <div className={styles.cardHeader}>
               <div className={styles.insurerLogo}>
                 {quote.insurerLogoPath && !failedLogos[quote.insurerId] ? (
-                  <Image
+                  <img
                     src={quote.insurerLogoPath}
                     alt={quote.insurerName}
                     width={100}
