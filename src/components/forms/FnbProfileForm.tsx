@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fnbProfileSchema, type FnbProfileInput } from "@/engine/schema";
 import styles from "./FnbProfileForm.module.css";

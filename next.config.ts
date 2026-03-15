@@ -1,4 +1,3 @@
-```typescript
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -6,6 +5,10 @@ const nextConfig: NextConfig = {
 
   images: {
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'inline-blob-**.vercel-storage.com',
+      },
       {
         protocol: 'https',
         hostname: '**.public.blob.vercel-storage.com',
