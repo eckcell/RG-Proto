@@ -23,7 +23,6 @@ const BUSINESS_TYPES = [
 
 export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
   const [step, setStep] = useState(1);
-  const [step4Touched, setStep4Touched] = useState(false);
   const totalSteps = 4;
 
   const form = useForm<FnbProfileInput>({
@@ -43,7 +42,7 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
       contactPhone: "",
     },
     reValidateMode: "onChange",
-    mode: "onChange",
+    mode: "onTouched",
   });
 
   const {
@@ -100,7 +99,6 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
   };
 
   const onSubmit = (data: FnbProfileInput) => {
-    setStep4Touched(true);
     onComplete(data);
   };
 
@@ -358,14 +356,10 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
               <input
                 id="contactName"
                 {...register("contactName")}
-                className={step4Touched && errors.contactName ? styles.inputError : ""}
+                className={(touchedFields.contactName || isSubmitted) && errors.contactName ? styles.inputError : ""}
                 placeholder="e.g. John Doe"
-                onChange={(e) => {
-                  setStep4Touched(true);
-                  register("contactName").onChange(e);
-                }}
               />
-              {step4Touched && errors.contactName && (
+              {(touchedFields.contactName || isSubmitted) && errors.contactName && (
                   <span className={styles.errorText}>
                     {errors.contactName.message}
                   </span>
@@ -378,14 +372,10 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
                 id="contactEmail"
                 type="email"
                 {...register("contactEmail")}
-                className={step4Touched && errors.contactEmail ? styles.inputError : ""}
+                className={(touchedFields.contactEmail || isSubmitted) && errors.contactEmail ? styles.inputError : ""}
                 placeholder="e.g. john@example.com"
-                onChange={(e) => {
-                  setStep4Touched(true);
-                  register("contactEmail").onChange(e);
-                }}
               />
-              {step4Touched && errors.contactEmail && (
+              {(touchedFields.contactEmail || isSubmitted) && errors.contactEmail && (
                   <span className={styles.errorText}>
                     {errors.contactEmail.message}
                   </span>
@@ -401,15 +391,11 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
                   type="text"
                   maxLength={8}
                   {...register("contactPhone")}
-                  className={step4Touched && errors.contactPhone ? styles.inputError : ""}
+                  className={(touchedFields.contactPhone || isSubmitted) && errors.contactPhone ? styles.inputError : ""}
                   placeholder="e.g. 91234567"
-                  onChange={(e) => {
-                    setStep4Touched(true);
-                    register("contactPhone").onChange(e);
-                  }}
                 />
               </div>
-              {step4Touched && errors.contactPhone && (
+              {(touchedFields.contactPhone || isSubmitted) && errors.contactPhone && (
                   <span className={styles.errorText}>
                     {errors.contactPhone.message}
                   </span>
