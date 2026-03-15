@@ -40,9 +40,24 @@ export function QuoteContainer() {
 
       // 3. Redirect to the standalone comparison route
       router.push(`/quote/compare?${params.toString()}`);
-    } catch (error) {
-      console.error(error);
-      alert("Something went wrong while capturing your details. Please try again.");
+    } catch (error: any) {
+      console.error("Submission error:", error);
+      
+      let errorMessage = "Something went wrong while capturing your details. Please try again.";
+      
+      if (error instanceof Response) {
+        try {
+          const detail = await error.json();
+          if (detail.message) errorMessage = `Submission failed: ${detail.message}`;
+          if (detail.details) console.error("Validation details:", detail.details);
+        } catch (e) {
+          // Fallback to default
+        }
+      } else if (error.message && error.message.includes("Unable to process")) {
+        // This comes from our manual throw
+      }
+      
+      alert(errorMessage);
     }
   };
 

@@ -33,23 +33,28 @@ function getInsurerPackageSchema() {
 
 /** All available insurers */
 export async function getInsurers(): Promise<Insurer[]> {
-  const dbInsurers = await prisma.insurer.findMany({
-    where: { active: true },
-  });
+  try {
+    const dbInsurers = await prisma.insurer.findMany({
+      where: { active: true },
+    });
 
-  return dbInsurers.map((i: any) => ({
-    id: i.id,
-    name: i.name,
-    fullName: i.fullName,
-    address: "", // Mapping empty as schema is slightly different
-    phone: "",
-    regNo: "",
-    website: "",
-    logoPath: i.logoPath,
-    productName: "",
-    productCode: "",
-    effectiveDate: i.createdAt.toISOString(),
-  }));
+    return dbInsurers.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+      fullName: i.fullName,
+      address: "", // Mapping empty as schema is slightly different
+      phone: "",
+      regNo: "",
+      website: "",
+      logoPath: i.logoPath,
+      productName: "",
+      productCode: "",
+      effectiveDate: i.createdAt.toISOString(),
+    }));
+  } catch (error) {
+    console.error("Failed to fetch insurers from DB:", error);
+    return [];
+  }
 }
 
 /** Get a single insurer by ID */
@@ -91,29 +96,34 @@ export function getRiskCategory(
 
 /** All insurer packages fetched from DB */
 export async function getPackages(): Promise<InsurerPackage[]> {
-  const dbProducts = await prisma.product.findMany({
-    where: { active: true },
-  });
+  try {
+    const dbProducts = await prisma.product.findMany({
+      where: { active: true },
+    });
 
-  return dbProducts.map((p: any) => {
-    try {
-      if (!p.configuration) {
-        console.warn(`Product ${p.id} has no configuration`);
+    return dbProducts.map((p: any) => {
+      try {
+        if (!p.configuration) {
+          console.warn(`Product ${p.id} has no configuration`);
+          return null;
+        }
+        const config = JSON.parse(p.configuration);
+        const schema = getInsurerPackageSchema();
+        
+        if (!schema || typeof schema.parse !== 'function') {
+          throw new Error("Zod schema initialization failed - schema is invalid");
+        }
+
+        return schema.parse(config) as InsurerPackage;
+      } catch (e) {
+        console.error(`Failed to parse product configuration for ${p.id}. Error: ${e instanceof Error ? e.message : String(e)}`);
         return null;
       }
-      const config = JSON.parse(p.configuration);
-      const schema = getInsurerPackageSchema();
-      
-      if (!schema || typeof schema.parse !== 'function') {
-        throw new Error("Zod schema initialization failed - schema is invalid");
-      }
-
-      return schema.parse(config) as InsurerPackage;
-    } catch (e) {
-      console.error(`Failed to parse product configuration for ${p.id}. Error: ${e instanceof Error ? e.message : String(e)}`);
-      return null;
-    }
-  }).filter((p: any): p is InsurerPackage => p !== null);
+    }).filter((p: any): p is InsurerPackage => p !== null);
+  } catch (error) {
+    console.error("Failed to fetch packages from DB:", error);
+    return [];
+  }
 }
 
 /** Get all packages for a specific insurer */

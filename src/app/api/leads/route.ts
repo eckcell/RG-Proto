@@ -76,6 +76,19 @@ export async function POST(req: Request) {
     );
   } catch (error: any) {
     console.error("API Error creating Lead:", error);
+    
+    // Check if it's a Zod validation error
+    if (error.name === "ZodError" || error.issues) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: "Validation Error", 
+          details: error.issues || error.message 
+        },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
       { success: false, message: error.message || "Internal Server Error" },
       { status: 500 }
