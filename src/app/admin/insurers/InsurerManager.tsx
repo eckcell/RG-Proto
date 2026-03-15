@@ -33,7 +33,13 @@ export default function InsurerManager() {
     try {
       const res = await fetch("/api/admin/insurers");
       const data = await res.json();
-      setInsurers(data);
+      
+      if (Array.isArray(data)) {
+        setInsurers(data);
+      } else {
+        console.error("API returned non-array data:", data);
+        setInsurers([]);
+      }
     } catch (err) {
       console.error("Failed to fetch insurers");
     } finally {
