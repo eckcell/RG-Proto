@@ -117,7 +117,7 @@ export function QuoteComparison({ comparison }: Props) {
               <div className={styles.insurerLogo}>
                 {quote.insurerLogoPath && !failedLogos[quote.insurerId] ? (
                   <img
-                    src={quote.insurerLogoPath}
+                    src={encodeURI(quote.insurerLogoPath)}
                     alt={quote.insurerName}
                     width={100}
                     height={40}
