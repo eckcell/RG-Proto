@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { put } from '@vercel/blob';
 import sharp from 'sharp';
 
 export async function POST(req: Request) {
@@ -24,28 +21,24 @@ export async function POST(req: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Ensure directory exists
-    const uploadDir = path.join(process.cwd(), 'public', 'insurers');
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (e) {
-      // Ignore if exists
-    }
+    // Process with sharp
+    const optimizedBuffer = await sharp(buffer)
+      .resize(400, 200, { fit: 'inside' })
+      .webp({ quality: 80 })
+      .toBuffer();
 
     // Generate unique filename
     const filename = file.name.replace(/\s+/g, '-').toLowerCase();
     const cleanFilename = filename.split('.')[0] + '-' + Date.now() + '.webp';
-    const filePath = path.join(uploadDir, cleanFilename);
 
-    // Process with sharp
-    await sharp(buffer)
-      .resize(400, 200, { fit: 'inside' })
-      .webp({ quality: 80 })
-      .toFile(filePath);
+    // Upload to Vercel Blob
+    const blob = await put(`insurers/${cleanFilename}`, optimizedBuffer, {
+      access: 'public',
+    });
 
     return NextResponse.json({ 
       success: true, 
-      path: `/insurers/${cleanFilename}` 
+      path: blob.url 
     });
   } catch (error) {
     console.error('Logo upload error:', error);
