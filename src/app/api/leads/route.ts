@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     };
 
     // 2. Generate quotes
-    const quotes = comparePackages(profile); // cast for now to avoid deep type nesting issues
+    const quotes = await comparePackages(profile); // cast for now to avoid deep type nesting issues
     const quotesJsonString = JSON.stringify(quotes);
 
     // 3. Save lead to PostgreSQL / SQLite database via Prisma

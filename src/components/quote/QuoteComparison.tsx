@@ -15,6 +15,11 @@ export function QuoteComparison({ comparison }: Props) {
   const { quotes, sortedByPremium } = comparison;
   const gridRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [failedLogos, setFailedLogos] = useState<Record<string, boolean>>({});
+
+  const handleLogoError = (insurerId: string) => {
+    setFailedLogos(prev => ({ ...prev, [insurerId]: true }));
+  };
 
   const handleDownloadPdf = async () => {
     if (!gridRef.current || isExporting) return;
@@ -60,7 +65,7 @@ export function QuoteComparison({ comparison }: Props) {
           </label>
         </div>
         <div className={styles.filterGroup}>
-           <label>
+          <label>
             <input type="checkbox" defaultChecked /> Best Value Promo
           </label>
         </div>
@@ -107,16 +112,18 @@ export function QuoteComparison({ comparison }: Props) {
             {/* Left Col: Brand and Product */}
             <div className={styles.cardHeader}>
               <div className={styles.insurerLogo}>
-                <Image
-                  src={`/insurers/${quote.insurerId}.png`}
-                  alt={quote.insurerName}
-                  width={100}
-                  height={40}
-                  style={{ objectFit: "contain" }}
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = "none";
-                  }}
-                />
+                {quote.insurerLogoPath && !failedLogos[quote.insurerId] ? (
+                  <Image
+                    src={quote.insurerLogoPath}
+                    alt={quote.insurerName}
+                    width={100}
+                    height={40}
+                    style={{ objectFit: "contain" }}
+                    onError={() => handleLogoError(quote.insurerId)}
+                  />
+                ) : (
+                  <span className={styles.insurerNameFallback}>{quote.insurerName}</span>
+                )}
               </div>
               <div>
                 <h3 className={styles.productName}>{quote.productName}</h3>

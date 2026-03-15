@@ -1,13 +1,13 @@
 /**
- * Data Loader Module
+ * Data Loader Module (Refactored for Database)
  *
  * Centralised access to all package data and reference data.
- * In MVP, data is loaded from static JSON files.
- * Post-MVP, this will be replaced with API/DB calls.
- *
- * v2 — Bundled package model with typed accessors.
+ * This version fetches data from the database asynchronously.
  */
 
+import { prisma } from "@/lib/prisma";
+import ssicCodesData from "@/data/ssic-codes.json";
+import { z } from "zod";
 import type {
   Insurer,
   InsurerPackage,
@@ -16,25 +16,51 @@ import type {
   OptionalCover,
 } from "@/engine/types";
 
-import insurersData from "@/data/insurers.json";
-import packagesData from "@/data/packages.json";
-import ssicCodesData from "@/data/ssic-codes.json";
+// Helper to get the schema lazily to avoid initialization order issues
+function getInsurerPackageSchema() {
+  return z.object({
+    insurerId: z.string(),
+    productName: z.string(),
+    tiers: z.array(z.any()),
+    topUpRates: z.record(z.string(), z.any()),
+    optionalCovers: z.array(z.any()),
+    specialFeatures: z.array(z.string()),
+    keyExclusions: z.array(z.string()),
+  });
+}
 
 // ── Insurer Accessors ───────────────────────────────────
 
 /** All available insurers */
-export function getInsurers(): Insurer[] {
-  return insurersData.insurers as Insurer[];
+export async function getInsurers(): Promise<Insurer[]> {
+  const dbInsurers = await prisma.insurer.findMany({
+    where: { active: true },
+  });
+
+  return dbInsurers.map((i: any) => ({
+    id: i.id,
+    name: i.name,
+    fullName: i.fullName,
+    address: "", // Mapping empty as schema is slightly different
+    phone: "",
+    regNo: "",
+    website: "",
+    logoPath: i.logoPath,
+    productName: "",
+    productCode: "",
+    effectiveDate: i.createdAt.toISOString(),
+  }));
 }
 
 /** Get a single insurer by ID */
-export function getInsurerById(id: string): Insurer | undefined {
-  return getInsurers().find((i) => i.id === id);
+export async function getInsurerById(id: string): Promise<Insurer | undefined> {
+  const insurers = await getInsurers();
+  return insurers.find((i) => i.id === id);
 }
 
 // ── SSIC Code Accessors ─────────────────────────────────
 
-/** All SSIC codes */
+/** All SSIC codes (Static reference data) */
 export function getSsicCodes(): SsicCode[] {
   return ssicCodesData.codes as SsicCode[];
 }
@@ -63,36 +89,59 @@ export function getRiskCategory(
 
 // ── Package Accessors ───────────────────────────────────
 
-/** All insurer packages (MSIG, EQ F&B, EQ Pubs, Liberty) */
-export function getPackages(): InsurerPackage[] {
-  return packagesData.packages as unknown as InsurerPackage[];
+/** All insurer packages fetched from DB */
+export async function getPackages(): Promise<InsurerPackage[]> {
+  const dbProducts = await prisma.product.findMany({
+    where: { active: true },
+  });
+
+  return dbProducts.map((p: any) => {
+    try {
+      if (!p.configuration) {
+        console.warn(`Product ${p.id} has no configuration`);
+        return null;
+      }
+      const config = JSON.parse(p.configuration);
+      const schema = getInsurerPackageSchema();
+      
+      if (!schema || typeof schema.parse !== 'function') {
+        throw new Error("Zod schema initialization failed - schema is invalid");
+      }
+
+      return schema.parse(config) as InsurerPackage;
+    } catch (e) {
+      console.error(`Failed to parse product configuration for ${p.id}. Error: ${e instanceof Error ? e.message : String(e)}`);
+      return null;
+    }
+  }).filter((p: any): p is InsurerPackage => p !== null);
 }
 
 /** Get all packages for a specific insurer */
-export function getPackagesByInsurer(insurerId: string): InsurerPackage[] {
-  return getPackages().filter((p) => p.insurerId === insurerId);
+export async function getPackagesByInsurer(insurerId: string): Promise<InsurerPackage[]> {
+  const packages = await getPackages();
+  return packages.filter((p) => p.insurerId === insurerId);
 }
 
 /** Get a specific package by insurer + product name */
-export function getPackage(
+export async function getPackage(
   insurerId: string,
   productName: string
-): InsurerPackage | undefined {
-  return getPackages().find(
+): Promise<InsurerPackage | undefined> {
+  const packages = await getPackages();
+  return packages.find(
     (p) => p.insurerId === insurerId && p.productName === productName
   );
 }
 
 /**
- * Get all tiers across all packages, optionally filtered by insurer.
- * Includes the parent package's insurerId and productName.
+ * Get all tiers across all packages.
  */
-export function getAllTiers(insurerId?: string): Array<
+export async function getAllTiers(insurerId?: string): Promise<Array<
   PackageTier & { insurerId: string; productName: string }
-> {
+>> {
   const packages = insurerId
-    ? getPackagesByInsurer(insurerId)
-    : getPackages();
+    ? await getPackagesByInsurer(insurerId)
+    : await getPackages();
 
   return packages.flatMap((pkg) =>
     pkg.tiers.map((tier) => ({
@@ -104,82 +153,36 @@ export function getAllTiers(insurerId?: string): Array<
 }
 
 /** Get a specific tier by its unique ID */
-export function getTierById(
+export async function getTierById(
   tierId: string
-): (PackageTier & { insurerId: string; productName: string }) | undefined {
-  return getAllTiers().find((t) => t.id === tierId);
-}
-
-/**
- * Find tiers that match a business type keyword.
- * E.g., "restaurant" will match EQ Restaurant, Liberty Restaurant.
- */
-export function findTiersByBusinessType(
-  businessType: string
-): Array<PackageTier & { insurerId: string; productName: string }> {
-  const lower = businessType.toLowerCase();
-  return getAllTiers().filter(
-    (t) =>
-      t.name.toLowerCase().includes(lower) ||
-      t.description.toLowerCase().includes(lower) ||
-      t.id.toLowerCase().includes(lower)
-  );
+): Promise<(PackageTier & { insurerId: string; productName: string }) | undefined> {
+  const tiers = await getAllTiers();
+  return tiers.find((t) => t.id === tierId);
 }
 
 /** Get top-up rates for a given insurer package */
-export function getTopUpRates(
+export async function getTopUpRates(
   insurerId: string,
   productName: string
-): Record<string, unknown> | undefined {
-  const pkg = getPackage(insurerId, productName);
+): Promise<Record<string, unknown> | undefined> {
+  const pkg = await getPackage(insurerId, productName);
   return pkg?.topUpRates;
 }
 
 /** Get optional covers for a given insurer package */
-export function getOptionalCovers(
+export async function getOptionalCovers(
   insurerId: string,
   productName: string
-): OptionalCover[] {
-  const pkg = getPackage(insurerId, productName);
+): Promise<OptionalCover[]> {
+  const pkg = await getPackage(insurerId, productName);
   return (pkg?.optionalCovers ?? []) as OptionalCover[];
 }
 
-/**
- * Get WICA optional cover data for a given package.
- * Returns the WICA optional cover object or undefined.
- */
-export function getWicaCover(
+/** Get WICA optional cover data */
+export async function getWicaCover(
   insurerId: string,
   productName: string
-): OptionalCover | undefined {
-  return getOptionalCovers(insurerId, productName).find(
-    (c) => c.id === "wica"
-  );
-}
-
-// ── Data Version Info ───────────────────────────────────
-
-/** Get version and last-updated metadata for the packages data */
-export function getPackagesVersion(): {
-  version: string;
-  lastUpdated: string;
-} {
-  return {
-    version: packagesData.version,
-    lastUpdated: packagesData.lastUpdated,
-  };
-}
-
-// ── Rate Data Freshness Check ───────────────────────────
-
-const STALENESS_THRESHOLD_MS = 6 * 30 * 24 * 60 * 60 * 1000; // ~6 months
-
-/** Check if the package data is older than 6 months */
-export function checkDataStaleness(): {
-  isStale: boolean;
-  lastUpdated: string;
-} {
-  const updatedAt = new Date(packagesData.lastUpdated).getTime();
-  const isStale = Date.now() - updatedAt > STALENESS_THRESHOLD_MS;
-  return { isStale, lastUpdated: packagesData.lastUpdated };
+): Promise<OptionalCover | undefined> {
+  const covers = await getOptionalCovers(insurerId, productName);
+  return covers.find((c) => c.id === "wica");
 }

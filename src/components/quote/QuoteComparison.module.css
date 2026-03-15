@@ -115,7 +115,15 @@
   height: 48px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+}
+
+.insurerNameFallback {
+  font-weight: 800;
+  color: #0B1C33;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .productName {

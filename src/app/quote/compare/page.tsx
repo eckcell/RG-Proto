@@ -52,7 +52,7 @@ export default async function ComparePage({
   };
 
   // Run the comparison engine
-  const comparison = comparePackages(profile);
+  const comparison = await comparePackages(profile);
 
   return (
     <div className={styles.main}>

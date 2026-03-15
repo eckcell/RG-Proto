@@ -4,7 +4,7 @@
  * Takes an F&B business profile and produces comparable quotes
  * across all eligible packages/tiers from all insurers.
  *
- * This module is a pure function — NO React, NO side effects.
+ * Now supports asynchronous data loading from the database.
  */
 
 import type {
@@ -18,17 +18,13 @@ import { calculatePackageQuote } from "@/engine/calculators/calculatePackage";
 
 /**
  * Map business type keywords to tier IDs for matching.
- * A tier is eligible if the profile's businessType appears
- * in the tier's ID, name, or description.
  */
 function isTierEligible(tierId: string, tierName: string, tierDesc: string, businessType: string): boolean {
   const bt = businessType.toLowerCase();
   const haystack = `${tierId} ${tierName} ${tierDesc}`.toLowerCase();
 
-  // Direct match
   if (haystack.includes(bt)) return true;
 
-  // Synonym mapping
   const synonyms: Record<string, string[]> = {
     restaurant: ["restaurant", "dining", "eating house", "cafe", "coffee house"],
     stall: ["stall", "food court", "coffee shop"],
@@ -45,22 +41,19 @@ function isTierEligible(tierId: string, tierName: string, tierDesc: string, busi
 
 /**
  * Compare packages across all insurers for a given F&B business profile.
- *
- * @returns PackageComparison with all successful quotes sorted by premium.
  */
-export function comparePackages(
+export async function comparePackages(
   profile: FnbBusinessProfile
-): PackageComparison {
-  const allPackages = getPackages();
+): Promise<PackageComparison> {
+  const allPackages = await getPackages();
   const quotes: PackageQuoteResult[] = [];
-  const errors: Array<{ insurerId: string; message: string }> = [];
 
   for (const pkg of allPackages) {
-    const insurer = getInsurerById(pkg.insurerId);
+    const insurer = await getInsurerById(pkg.insurerId);
     const insurerName = insurer?.name ?? pkg.insurerId;
+    const insurerLogoPath = insurer?.logoPath || "";
 
     for (const tier of pkg.tiers) {
-      // Check if this tier is eligible for the business type
       if (
         !isTierEligible(tier.id, tier.name, tier.description, profile.businessType)
       ) {
@@ -75,17 +68,14 @@ export function comparePackages(
       );
 
       if (result.success) {
-        quotes.push(result.quote);
-      } else {
-        errors.push({
-          insurerId: pkg.insurerId,
-          message: result.error.message,
+        quotes.push({
+          ...result.quote,
+          insurerLogoPath
         });
       }
     }
   }
 
-  // Sort by total premium ascending
   const sortedByPremium = [...quotes].sort(
     (a, b) => a.totalPremiumCents - b.totalPremiumCents
   );
@@ -99,12 +89,11 @@ export function comparePackages(
 
 /**
  * Get a quick summary of available packages for a business type.
- * Useful for UI to show which insurers have matching products.
  */
-export function getAvailablePackagesForType(
+export async function getAvailablePackagesForType(
   businessType: string
-): Array<{ insurerId: string; productName: string; tierName: string; basePremiumCents: number | null }> {
-  const allPackages = getPackages();
+): Promise<Array<{ insurerId: string; productName: string; tierName: string; basePremiumCents: number | null }>> {
+  const allPackages = await getPackages();
   const available: Array<{
     insurerId: string;
     productName: string;

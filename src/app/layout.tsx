@@ -53,9 +53,6 @@ export default function RootLayout({
                 <Link href="/quote" className="nav-link">
                   Get Quotes
                 </Link>
-                <Link href="/disclaimer" className="nav-link nav-link--muted">
-                  Disclaimer
-                </Link>
               </nav>
             </div>
           </header>
@@ -83,7 +80,7 @@ export default function RootLayout({
               />
               <p>
                 © {new Date().getFullYear()} RiskGuard Insurance Brokers Pte
-                Ltd. Not a licensed financial adviser.
+                Ltd.
               </p>
               <div className="footer-links">
                 <Link href="/disclaimer">Legal Disclaimer</Link>

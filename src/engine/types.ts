@@ -195,6 +195,7 @@ export interface WicaEmployeeInput {
 export interface PackageQuoteResult {
   insurerId: string;
   insurerName: string;
+  insurerLogoPath: string;
   productName: string;
   tierId: string;
   tierName: string;
