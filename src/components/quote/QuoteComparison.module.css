@@ -19,15 +19,49 @@
 }
 
 .sidebar h3 {
-  color: #0B1C33;
-  margin-bottom: 1rem;
   font-size: 1.1rem;
-  border-bottom: 2px solid #f1f5f9;
+  margin-bottom: 1.5rem;
+  color: #1a202c;
+  border-bottom: 2px solid #e2e8f0;
   padding-bottom: 0.5rem;
+}
+
+.filterTitle {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .filterGroup {
   margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #2d3748;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: color 0.2s;
+}
+
+.checkboxLabel:hover {
+  color: #2b6cb0;
+}
+
+.checkboxLabel input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 
 .mainContent {

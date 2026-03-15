@@ -16,6 +16,30 @@ import type {
   OptionalCover,
 } from "@/engine/types";
 
+// ── Prisma Raw Types (for mapping) ──────────────────────
+interface PrismaInsurer {
+  id: string;
+  name: string;
+  fullName: string;
+  logoPath: string;
+  description: string | null;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface PrismaProduct {
+  id: string;
+  insurerId: string;
+  name: string;
+  productCode: string;
+  configuration: string;
+  brochureUrl: string | null;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Helper to get the schema lazily to avoid initialization order issues
 function getInsurerPackageSchema() {
   return z.object({
@@ -38,7 +62,7 @@ export async function getInsurers(): Promise<Insurer[]> {
       where: { active: true },
     });
 
-    return dbInsurers.map((i: any) => ({
+    return dbInsurers.map((i: PrismaInsurer) => ({
       id: i.id,
       name: i.name,
       fullName: i.fullName,
@@ -113,7 +137,7 @@ export async function getPackages(): Promise<InsurerPackage[]> {
       where: { active: true },
     });
 
-    return dbProducts.map((p: any) => {
+    return dbProducts.map((p: PrismaProduct) => {
       try {
         if (!p.configuration) {
           console.warn(`Product ${p.id} has no configuration`);
@@ -131,7 +155,7 @@ export async function getPackages(): Promise<InsurerPackage[]> {
         console.error(`Failed to parse product configuration for ${p.id}. Error: ${e instanceof Error ? e.message : String(e)}`);
         return null;
       }
-    }).filter((p: any): p is InsurerPackage => p !== null);
+    }).filter((p: InsurerPackage | null): p is InsurerPackage => p !== null);
   } catch (error) {
     console.error("Failed to fetch packages from DB:", error);
     return [];

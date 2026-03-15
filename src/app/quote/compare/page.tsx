@@ -56,7 +56,10 @@ export default async function ComparePage({
 
   return (
     <div className={styles.main}>
-      <QuoteComparison comparison={comparison} />
+      <QuoteComparison 
+        comparison={comparison} 
+        leadId={typeof params.leadId === "string" ? params.leadId : undefined}
+      />
     </div>
   );
 }

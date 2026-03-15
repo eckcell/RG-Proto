@@ -37,6 +37,12 @@ export function QuoteContainer() {
         wicaRequired: data.wicaRequired.toString(),
       });
 
+      // Capture leadId if it was returned
+      const resJson = await response.json();
+      if (resJson.leadId) {
+        params.append("leadId", resJson.leadId);
+      }
+
       // Optionally serialize wicaEmployees if present
       if (data.wicaEmployees && data.wicaEmployees.length > 0) {
         params.append("wicaEmployees", JSON.stringify(data.wicaEmployees));

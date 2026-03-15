@@ -59,6 +59,9 @@ model Lead {
   contactPhone        String
   quoteData           String   // JSON string of quote results
   status              String   @default("NEW")
+  selectedInsurer     String?
+  selectedProduct     String?
+  selectedPremiumCents Int?
   internalNotes       String?
   emailSent           Boolean  @default(false)
   assignedTo          String?
