@@ -2,12 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fnbProfileSchema, type FnbProfileInput } from "@/engine/schema";
 import styles from "./FnbProfileForm.module.css";
 
 interface Props {
   onComplete: (data: FnbProfileInput) => void;
+  isSubmitting?: boolean;
 }
 
 const BUSINESS_TYPES = [
@@ -20,7 +23,7 @@ const BUSINESS_TYPES = [
   { id: "fnb", label: "Other F&B", desc: "Other Food & Beverage" },
 ];
 
-export function FnbProfileForm({ onComplete }: Props) {
+export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
   const [step, setStep] = useState(1);
   const totalSteps = 4;
 
@@ -354,16 +357,10 @@ export function FnbProfileForm({ onComplete }: Props) {
               <input
                 id="contactName"
                 {...register("contactName")}
-                className={
-                  (touchedFields.contactName || isSubmitted) &&
-                  errors.contactName
-                    ? styles.inputError
-                    : ""
-                }
+                className={errors.contactName ? styles.inputError : ""}
                 placeholder="e.g. John Doe"
               />
-              {(touchedFields.contactName || isSubmitted) &&
-                errors.contactName && (
+              {errors.contactName && (
                   <span className={styles.errorText}>
                     {errors.contactName.message}
                   </span>
@@ -376,16 +373,10 @@ export function FnbProfileForm({ onComplete }: Props) {
                 id="contactEmail"
                 type="email"
                 {...register("contactEmail")}
-                className={
-                  (touchedFields.contactEmail || isSubmitted) &&
-                  errors.contactEmail
-                    ? styles.inputError
-                    : ""
-                }
+                className={errors.contactEmail ? styles.inputError : ""}
                 placeholder="e.g. john@example.com"
               />
-              {(touchedFields.contactEmail || isSubmitted) &&
-                errors.contactEmail && (
+              {errors.contactEmail && (
                   <span className={styles.errorText}>
                     {errors.contactEmail.message}
                   </span>
@@ -401,17 +392,11 @@ export function FnbProfileForm({ onComplete }: Props) {
                   type="text"
                   maxLength={8}
                   {...register("contactPhone")}
-                  className={
-                    (touchedFields.contactPhone || isSubmitted) &&
-                    errors.contactPhone
-                      ? styles.inputError
-                      : ""
-                  }
+                  className={errors.contactPhone ? styles.inputError : ""}
                   placeholder="e.g. 91234567"
                 />
               </div>
-              {(touchedFields.contactPhone || isSubmitted) &&
-                errors.contactPhone && (
+              {errors.contactPhone && (
                   <span className={styles.errorText}>
                     {errors.contactPhone.message}
                   </span>
@@ -423,7 +408,7 @@ export function FnbProfileForm({ onComplete }: Props) {
         {/* Footer actions */}
         <div className={styles.formActions}>
           {step > 1 ? (
-            <button type="button" onClick={prevStep} className={styles.btnPrev}>
+            <button type="button" onClick={prevStep} className={styles.btnPrev} disabled={isSubmitting}>
               Back
             </button>
           ) : (
@@ -431,12 +416,12 @@ export function FnbProfileForm({ onComplete }: Props) {
           )}
 
           {step < totalSteps ? (
-            <button type="button" onClick={nextStep} className={styles.btnNext}>
+            <button type="button" onClick={nextStep} className={styles.btnNext} disabled={isSubmitting}>
               Next Step
             </button>
           ) : (
-            <button type="submit" className={styles.btnSubmit}>
-              Get Quotes
+            <button type="submit" className={styles.btnSubmit} disabled={isSubmitting}>
+              {isSubmitting ? "Generating Quotes..." : "Get Quotes"}
             </button>
           )}
         </div>

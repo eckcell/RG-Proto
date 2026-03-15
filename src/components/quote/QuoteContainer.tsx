@@ -7,8 +7,10 @@ import styles from "./QuoteContainer.module.css";
 
 export function QuoteContainer() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFormComplete = async (data: FnbProfileInput) => {
+    setIsSubmitting(true);
     try {
       // 1. Post to lead capture API
       const response = await fetch("/api/leads", {
@@ -51,6 +53,8 @@ export function QuoteContainer() {
       }
       
       alert(displayMessage);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -64,7 +68,7 @@ export function QuoteContainer() {
             across multiple leading insurers in Singapore.
           </p>
         </div>
-        <FnbProfileForm onComplete={handleFormComplete} />
+        <FnbProfileForm onComplete={handleFormComplete} isSubmitting={isSubmitting} />
       </div>
     </div>
   );
