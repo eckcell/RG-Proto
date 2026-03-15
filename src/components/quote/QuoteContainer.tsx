@@ -18,7 +18,8 @@ export function QuoteContainer() {
       });
 
       if (!response.ok) {
-        throw new Error("Unable to process your request");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Server error (${response.status})`);
       }
 
       // 2. Build query parameters string
@@ -43,21 +44,13 @@ export function QuoteContainer() {
     } catch (error: any) {
       console.error("Submission error:", error);
       
-      let errorMessage = "Something went wrong while capturing your details. Please try again.";
+      let displayMessage = "Something went wrong while capturing your details. Please try again.";
       
-      if (error instanceof Response) {
-        try {
-          const detail = await error.json();
-          if (detail.message) errorMessage = `Submission failed: ${detail.message}`;
-          if (detail.details) console.error("Validation details:", detail.details);
-        } catch (e) {
-          // Fallback to default
-        }
-      } else if (error.message && error.message.includes("Unable to process")) {
-        // This comes from our manual throw
+      if (error.message && error.message !== "Unable to process your request") {
+        displayMessage = `Submission failed: ${error.message}`;
       }
       
-      alert(errorMessage);
+      alert(displayMessage);
     }
   };
 
