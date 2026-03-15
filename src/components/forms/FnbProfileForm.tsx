@@ -23,6 +23,7 @@ const BUSINESS_TYPES = [
 
 export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
   const [step, setStep] = useState(1);
+  const [hasAttemptedStep4, setHasAttemptedStep4] = useState(false);
   const totalSteps = 4;
 
   const form = useForm<FnbProfileInput>({
@@ -42,7 +43,7 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
       contactPhone: "",
     },
     reValidateMode: "onChange",
-    mode: "onTouched",
+    mode: "onSubmit",
   });
 
   const {
@@ -55,12 +56,6 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
     formState: { errors, touchedFields, isSubmitted },
   } = form;
 
-  // Clear errors for Contact Information when entering Step 4
-  useEffect(() => {
-    if (step === 4) {
-      clearErrors(["contactName", "contactEmail", "contactPhone"]);
-    }
-  }, [step, clearErrors]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -134,13 +129,13 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
                 id="companyName"
                 {...register("companyName")}
                 className={errors.companyName ? styles.inputError : ""}
-                placeholder="e.g. RiskGuard Test Pte Ltd"
+                placeholder="e.g. John Doe"
               />
               {errors.companyName && (
-                <span className={styles.errorText}>
-                  {errors.companyName.message}
-                </span>
-              )}
+                  <span className={styles.errorText}>
+                    {errors.companyName.message}
+                  </span>
+                )}
             </div>
 
             <div className={styles.formGroup}>
@@ -356,10 +351,10 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
               <input
                 id="contactName"
                 {...register("contactName")}
-                className={(touchedFields.contactName || isSubmitted) && errors.contactName ? styles.inputError : ""}
+                className={hasAttemptedStep4 && errors.contactName ? styles.inputError : ""}
                 placeholder="e.g. John Doe"
               />
-              {(touchedFields.contactName || isSubmitted) && errors.contactName && (
+              {hasAttemptedStep4 && errors.contactName && (
                   <span className={styles.errorText}>
                     {errors.contactName.message}
                   </span>
@@ -372,10 +367,10 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
                 id="contactEmail"
                 type="email"
                 {...register("contactEmail")}
-                className={(touchedFields.contactEmail || isSubmitted) && errors.contactEmail ? styles.inputError : ""}
+                className={hasAttemptedStep4 && errors.contactEmail ? styles.inputError : ""}
                 placeholder="e.g. john@example.com"
               />
-              {(touchedFields.contactEmail || isSubmitted) && errors.contactEmail && (
+              {hasAttemptedStep4 && errors.contactEmail && (
                   <span className={styles.errorText}>
                     {errors.contactEmail.message}
                   </span>
@@ -391,11 +386,11 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
                   type="text"
                   maxLength={8}
                   {...register("contactPhone")}
-                  className={(touchedFields.contactPhone || isSubmitted) && errors.contactPhone ? styles.inputError : ""}
+                  className={hasAttemptedStep4 && errors.contactPhone ? styles.inputError : ""}
                   placeholder="e.g. 91234567"
                 />
               </div>
-              {(touchedFields.contactPhone || isSubmitted) && errors.contactPhone && (
+              {hasAttemptedStep4 && errors.contactPhone && (
                   <span className={styles.errorText}>
                     {errors.contactPhone.message}
                   </span>
@@ -419,7 +414,12 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
               Next Step
             </button>
           ) : (
-            <button type="submit" className={styles.btnSubmit} disabled={isSubmitting}>
+            <button 
+              type="submit" 
+              className={styles.btnSubmit} 
+              disabled={isSubmitting}
+              onClick={() => setHasAttemptedStep4(true)}
+            >
               {isSubmitting ? "Generating Quotes..." : "Get Quotes"}
             </button>
           )}

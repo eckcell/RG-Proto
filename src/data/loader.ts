@@ -60,7 +60,19 @@ export async function getInsurers(): Promise<Insurer[]> {
 /** Get a single insurer by ID */
 export async function getInsurerById(id: string): Promise<Insurer | undefined> {
   const insurers = await getInsurers();
-  return insurers.find((i) => i.id === id);
+  const byId = insurers.find((i) => i.id === id);
+  if (byId) return byId;
+
+  // Resilient fallback for legacy insurer IDs used in product JSON config
+  const slug = id.toLowerCase();
+  return insurers.find((i) => {
+    const name = i.name.toLowerCase();
+    return (
+      (slug === "msig" && name.includes("msig")) ||
+      (slug === "eq" && name.includes("eq insurance")) ||
+      (slug === "liberty" && name.includes("liberty"))
+    );
+  });
 }
 
 // ── SSIC Code Accessors ─────────────────────────────────

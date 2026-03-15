@@ -116,7 +116,7 @@ export const wicaAddonSchema = z.object({
 // =============================================
 
 export const contactDetailsSchema = z.object({
-  contactName: z.string().min(2, "Name is required"),
+  contactName: z.string().min(1, "Name is required").min(2, "Name must be at least 2 characters"),
   contactEmail: z.string().email("Invalid email address"),
   contactPhone: z.string().regex(/^[89]\d{7}$/, "Invalid Singapore mobile number (starts with 8 or 9)"),
 });

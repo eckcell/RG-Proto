@@ -84,9 +84,17 @@ export async function POST(req: Request) {
     });
 
   } catch (error: any) {
+    if (error instanceof z.ZodError) {
+      console.error("Dry-run validation error:", error.issues);
+      return NextResponse.json({ 
+        success: false, 
+        error: "Schema validation failed: " + error.issues.map((e: z.ZodIssue) => `${e.path.join('.')}: ${e.message}`).join(', ')
+      }, { status: 400 });
+    }
+    console.error("Dry-run unexpected error:", error);
     return NextResponse.json({ 
       success: false, 
-      error: "Invalid JSON configuration: " + error.message 
-    }, { status: 400 });
+      error: error.message || "An unexpected error occurred during dry run"
+    }, { status: 500 });
   }
 }
