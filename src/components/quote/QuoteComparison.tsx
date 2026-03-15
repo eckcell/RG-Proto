@@ -25,7 +25,11 @@ export function QuoteComparison({ comparison }: Props) {
     if (!gridRef.current || isExporting) return;
     try {
       setIsExporting(true);
-      const canvas = await html2canvas(gridRef.current, { scale: 1.5 });
+      const canvas = await html2canvas(gridRef.current, { 
+        scale: 1.5,
+        useCORS: true,
+        allowTaint: true
+      });
       const imgData = canvas.toDataURL("image/jpeg", 0.7); // Compress to JPEG
       const pdf = new jsPDF("p", "mm", "a4");
 
