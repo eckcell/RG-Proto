@@ -5,14 +5,14 @@ import { authOptions } from "@/lib/auth";
 
 export async function GET(
   req: Request,
-  { params }: { params: { insurerId: string } }
+  { params }: { params: Promise<{ insurerId: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { insurerId } = params;
+  const { insurerId } = await params;
 
   const products = await prisma.product.findMany({
     where: { insurerId },
@@ -24,14 +24,14 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { insurerId: string } }
+  { params }: { params: Promise<{ insurerId: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { insurerId } = params;
+  const { insurerId } = await params;
   const body = await req.json();
 
   try {
