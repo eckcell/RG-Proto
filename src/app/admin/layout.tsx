@@ -12,10 +12,12 @@ export default async function AdminLayout({
 }) {
   const session = await getServerSession(authOptions);
 
-  // Note: Middleware also protects this, but extra check here for layout safety
-  if (!session && !true) { // Temporary allow for dev if needed, but session is better
-    // redirect("/admin/login");
+  // Authentication bypass enabled for testing
+  /*
+  if (!session) {
+    redirect("/admin/login");
   }
+  */
 
   return (
     <AuthProvider>
