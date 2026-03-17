@@ -1,7 +1,7 @@
 "use client";
 
 import type { PackageComparison, PackageQuoteResult } from "@/engine/types";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import styles from "./QuoteComparison.module.css";
@@ -16,12 +16,16 @@ export function QuoteComparison({ comparison, leadId }: Props) {
   const gridRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [failedLogos, setFailedLogos] = useState<Record<string, boolean>>({});
-  
+
   // Sorting & Filtering State
   const [sortBy, setSortBy] = useState<"premium_asc" | "premium_desc">("premium_asc");
   const [selectedInsurers, setSelectedInsurers] = useState<string[]>([]);
   const [showBestValueOnly, setShowBestValueOnly] = useState(false);
   const [isApplying, setIsApplying] = useState<string | null>(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const allInsurers = Array.from(new Set(quotes.map(q => q.insurerName))).sort();
 
@@ -30,17 +34,17 @@ export function QuoteComparison({ comparison, leadId }: Props) {
   };
 
   const handleInsurerToggle = (name: string) => {
-    setSelectedInsurers(prev => 
+    setSelectedInsurers(prev =>
       prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]
     );
   };
 
   const handleApply = async (quote: PackageQuoteResult) => {
     if (isApplying) return;
-    
+
     try {
       setIsApplying(quote.insurerId + quote.tierId);
-      
+
       // 1. Update Database Selection
       if (leadId) {
         await fetch(`/api/leads/${leadId}/select`, {
@@ -64,10 +68,10 @@ export function QuoteComparison({ comparison, leadId }: Props) {
         `Reference ID: ${leadId || "N/A"}\n\n` +
         `Please advise on next steps.`
       );
-      
-      const whatsappUrl = `https://wa.me/6588888888?text=${message}`;
+
+      const whatsappUrl = `https://wa.me/83898636?text=${message}`;
       window.open(whatsappUrl, "_blank");
-      
+
     } catch (error) {
       console.error("Selection failed:", error);
       alert("Failed to process selection. Please try again.");
@@ -80,7 +84,7 @@ export function QuoteComparison({ comparison, leadId }: Props) {
     if (!gridRef.current || isExporting) return;
     try {
       setIsExporting(true);
-      const canvas = await html2canvas(gridRef.current, { 
+      const canvas = await html2canvas(gridRef.current, {
         scale: 1.5,
         useCORS: true,
         allowTaint: true
@@ -114,11 +118,11 @@ export function QuoteComparison({ comparison, leadId }: Props) {
       <div className={styles.emptyState}>
         <h2>No packages found</h2>
         <p>Try adjusting your filters or refine your profile.</p>
-        <button 
+        <button
           onClick={() => {
             setSelectedInsurers([]);
             setShowBestValueOnly(false);
-          }} 
+          }}
           className={styles.btnSecondary}
         >
           Clear Filters
@@ -135,8 +139,8 @@ export function QuoteComparison({ comparison, leadId }: Props) {
           <label className={styles.filterTitle}>Insurers</label>
           {allInsurers.map(name => (
             <label key={name} className={styles.checkboxLabel}>
-              <input 
-                type="checkbox" 
+              <input
+                type="checkbox"
                 checked={selectedInsurers.includes(name)}
                 onChange={() => handleInsurerToggle(name)}
               /> {name}
@@ -145,8 +149,8 @@ export function QuoteComparison({ comparison, leadId }: Props) {
         </div>
         <div className={styles.filterGroup}>
           <label className={styles.checkboxLabel}>
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               checked={showBestValueOnly}
               onChange={(e) => setShowBestValueOnly(e.target.checked)}
             /> Best Value Only
@@ -163,22 +167,22 @@ export function QuoteComparison({ comparison, leadId }: Props) {
             </p>
           </div>
           <div className={styles.headerActions}>
-             <select 
-                className={styles.btnSecondary} 
-                style={{ padding: '0.5rem', marginRight: '1rem' }}
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-             >
-                <option value="premium_asc">Sort by: Lowest Premium</option>
-                <option value="premium_desc">Sort by: Highest Premium</option>
-             </select>
-             <button 
-                className={styles.btnPrimary} 
-                onClick={handleDownloadPdf} 
-                disabled={isExporting}
-                style={{ width: 'auto' }}>
-               {isExporting ? "Generating PDF..." : "Download as PDF"}
-             </button>
+            <select
+              className={styles.btnSecondary}
+              style={{ padding: '0.5rem', marginRight: '1rem' }}
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+            >
+              <option value="premium_asc">Sort by: Lowest Premium</option>
+              <option value="premium_desc">Sort by: Highest Premium</option>
+            </select>
+            <button
+              className={styles.btnPrimary}
+              onClick={handleDownloadPdf}
+              disabled={isExporting}
+              style={{ width: 'auto' }}>
+              {isExporting ? "Generating PDF..." : "Download as PDF"}
+            </button>
           </div>
         </header>
 
@@ -187,7 +191,7 @@ export function QuoteComparison({ comparison, leadId }: Props) {
             const pl = quote.coverageSummary.publicLiability || "-";
             const pa = quote.coverageSummary.personalAccident || "-";
             const fire = quote.coverageSummary.fireContents || quote.coverageSummary.allRisks || "-";
-            
+
             const isBestValue = quotes.length > 0 && quote.totalPremiumCents === quotes[0].totalPremiumCents;
 
             return (
@@ -220,28 +224,28 @@ export function QuoteComparison({ comparison, leadId }: Props) {
                 </div>
 
                 <div className={styles.metricsArea}>
-                   <div className={styles.metricsGrid}>
-                      <div className={styles.metricItem}>
-                         <span className={styles.metricValue}>{pl.includes("S$") ? pl.match(/S\$[\d,]+/)?.[0] || 'Covered' : 'Covered'}</span>
-                         <span className={styles.metricLabel}>Public Liability</span>
-                      </div>
-                      <div className={styles.metricItem}>
-                         <span className={styles.metricValue}>{pa.includes("S$") ? pa.match(/S\$[\d,]+/)?.[0] || 'Covered' : 'No Cover'}</span>
-                         <span className={styles.metricLabel}>Personal Accident</span>
-                      </div>
-                      <div className={styles.metricItem}>
-                         <span className={styles.metricValue}>{fire.includes("S$") ? fire.match(/S\$[\d,]+/)?.[0] || 'Covered' : 'Covered'}</span>
-                         <span className={styles.metricLabel}>Property / Fire</span>
-                      </div>
-                   </div>
+                  <div className={styles.metricsGrid}>
+                    <div className={styles.metricItem}>
+                      <span className={styles.metricValue}>{pl.includes("S$") ? pl.match(/S\$[\d,]+/)?.[0] || 'Covered' : 'Covered'}</span>
+                      <span className={styles.metricLabel}>Public Liability</span>
+                    </div>
+                    <div className={styles.metricItem}>
+                      <span className={styles.metricValue}>{pa.includes("S$") ? pa.match(/S\$[\d,]+/)?.[0] || 'Covered' : 'No Cover'}</span>
+                      <span className={styles.metricLabel}>Personal Accident</span>
+                    </div>
+                    <div className={styles.metricItem}>
+                      <span className={styles.metricValue}>{fire.includes("S$") ? fire.match(/S\$[\d,]+/)?.[0] || 'Covered' : 'Covered'}</span>
+                      <span className={styles.metricLabel}>Property / Fire</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div className={styles.premiumBox}>
                   <div className={styles.premiumAmount}>
                     S$ {(quote.totalPremiumCents / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </div>
-                  <div className={styles.premiumLabel}>Annual Base Premium<br/>(incl. 9% GST)</div>
-                  <button 
+                  <div className={styles.premiumLabel}>Annual Base Premium<br />(incl. 9% GST)</div>
+                  <button
                     className={styles.btnPrimary}
                     onClick={() => handleApply(quote)}
                     disabled={!!isApplying}
@@ -270,7 +274,7 @@ export function QuoteComparison({ comparison, leadId }: Props) {
                           <span>S$ {(item.amountCents / 100).toFixed(2)}</span>
                         </div>
                       ))}
-                      
+
                       <div className={styles.featureList}>
                         <h4>Included Covers:</h4>
                         <ul>

@@ -82,6 +82,7 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
     const isStepValid = await trigger(fieldsToValidate, { shouldFocus: false });
     if (isStepValid && step < totalSteps) {
       setStep((s) => s + 1);
+      window.scrollTo(0, 0);
       // Explicitly clear errors for the upcoming step
       if (step === 3) {
         clearErrors(["contactName", "contactEmail", "contactPhone"]);
@@ -90,7 +91,10 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
   };
 
   const prevStep = () => {
-    if (step > 1) setStep((s) => s - 1);
+    if (step > 1) {
+      setStep((s) => s - 1);
+      window.scrollTo(0, 0);
+    }
   };
 
   const onSubmit = (data: FnbProfileInput) => {
