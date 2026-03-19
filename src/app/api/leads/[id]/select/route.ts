@@ -31,10 +31,11 @@ export async function POST(
       message: "Selection saved successfully",
       lead: updatedLead,
     });
-  } catch (error: any) {
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Internal Server Error";
     console.error("Selection API Error:", error);
     return NextResponse.json(
-      { success: false, message: error.message || "Internal Server Error" },
+      { success: false, message },
       { status: 500 }
     );
   }

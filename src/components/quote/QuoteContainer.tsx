@@ -50,12 +50,12 @@ export function QuoteContainer() {
 
       // 3. Redirect to the standalone comparison route
       router.push(`/quote/compare?${params.toString()}`);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Submission error:", error);
       
       let displayMessage = "Something went wrong while capturing your details. Please try again.";
       
-      if (error.message && error.message !== "Unable to process your request") {
+      if (error instanceof Error && error.message && error.message !== "Unable to process your request") {
         displayMessage = `Submission failed: ${error.message}`;
       }
       

@@ -1,5 +1,5 @@
 import sharp from "sharp";
-import { writeFile, mkdir } from "fs/promises";
+import { mkdir } from "fs/promises";
 import path from "path";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public/uploads/logos");

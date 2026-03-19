@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
 import { optimizeAndSaveLogo } from "@/lib/image-utils";
 
 export async function POST(req: Request) {
@@ -23,8 +21,9 @@ export async function POST(req: Request) {
     const savedPath = await optimizeAndSaveLogo(file, insurerId);
 
     return NextResponse.json({ path: savedPath });
-  } catch (error: any) {
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Upload failed";
     console.error("Upload error:", error);
-    return NextResponse.json({ error: "Upload failed: " + error.message }, { status: 500 });
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

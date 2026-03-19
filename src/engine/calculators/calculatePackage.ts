@@ -215,13 +215,28 @@ function calculateEqTopUps(
 
 // ── Liberty Top-Up Calculator ───────────────────────────
 
+interface TopUpRates {
+  allRisks?: {
+    stall?: { amount: number; rate: number };
+    restaurant?: { amount: number; rate: number };
+  };
+  publicLiability?: {
+    amount: number;
+    rate: number;
+    incrementCents?: number;
+    perIncrementCents?: number;
+  };
+  money?: { amount: number; rate: number };
+  [key: string]: unknown;
+}
+
 function calculateLibertyTopUps(
   pkg: InsurerPackage,
   tier: PackageTier,
   profile: FnbBusinessProfile
 ): TopUpLineItem[] {
   const items: TopUpLineItem[] = [];
-  const rates = pkg.topUpRates as Record<string, any>;
+  const rates = pkg.topUpRates as TopUpRates;
 
   // Additional all-risks
   if (profile.additionalSumInsuredCents > 0 && rates.allRisks) {
@@ -401,8 +416,7 @@ export function calculatePackageQuote(
     specialFeatures: pkg.specialFeatures,
     keyExclusions: pkg.keyExclusions,
     effectiveDate:
-      ((pkg as unknown as Record<string, unknown>).effectiveDate as string) ??
-      new Date().toISOString().slice(0, 10),
+      pkg.effectiveDate ?? new Date().toISOString().slice(0, 10),
   };
 
   return { success: true, quote };

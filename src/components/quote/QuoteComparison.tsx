@@ -4,6 +4,7 @@ import type { PackageComparison, PackageQuoteResult } from "@/engine/types";
 import { useRef, useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import Image from "next/image";
 import styles from "./QuoteComparison.module.css";
 
 interface Props {
@@ -171,7 +172,7 @@ export function QuoteComparison({ comparison, leadId }: Props) {
               className={styles.btnSecondary}
               style={{ padding: '0.5rem', marginRight: '1rem' }}
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
+              onChange={(e) => setSortBy(e.target.value as "premium_asc" | "premium_desc")}
             >
               <option value="premium_asc">Sort by: Lowest Premium</option>
               <option value="premium_desc">Sort by: Highest Premium</option>
@@ -187,7 +188,7 @@ export function QuoteComparison({ comparison, leadId }: Props) {
         </header>
 
         <div className={styles.quoteGrid} ref={gridRef}>
-          {processedQuotes.map((quote: PackageQuoteResult, index: number) => {
+          {processedQuotes.map((quote: PackageQuoteResult) => {
             const pl = quote.coverageSummary.publicLiability || "-";
             const pa = quote.coverageSummary.personalAccident || "-";
             const fire = quote.coverageSummary.fireContents || quote.coverageSummary.allRisks || "-";
@@ -205,7 +206,7 @@ export function QuoteComparison({ comparison, leadId }: Props) {
                 <div className={styles.cardHeader}>
                   <div className={styles.insurerLogo}>
                     {quote.insurerLogoPath && !failedLogos[quote.insurerId] ? (
-                      <img
+                      <Image
                         src={quote.insurerLogoPath}
                         alt={quote.insurerName}
                         width={100}

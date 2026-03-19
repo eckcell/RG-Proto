@@ -45,8 +45,9 @@ export async function POST(req: Request) {
         },
       });
       leadId = newLead.id;
-    } catch (dbError: any) {
-      console.error("Database save failed (expected on Vercel with SQLite):", dbError.message);
+    } catch (dbError) {
+      const errorMessage = dbError instanceof Error ? dbError.message : "Unknown database error";
+      console.error("Database save failed (expected on Vercel with SQLite):", errorMessage);
       // We continue here so the user can still see their results
     }
 
@@ -74,23 +75,25 @@ export async function POST(req: Request) {
       { success: true, leadId, quotes },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error("API Error creating Lead:", error);
     
     // Check if it's a Zod validation error
-    if (error.name === "ZodError" || error.issues) {
+    if (error && typeof error === "object" && ("name" in error && error.name === "ZodError" || "issues" in error)) {
+      const issues = (error as Record<string, unknown>).issues || (error as Record<string, unknown>).message;
       return NextResponse.json(
         { 
           success: false, 
           message: "Validation Error", 
-          details: error.issues || error.message 
+          details: issues 
         },
         { status: 400 }
       );
     }
 
+    const message = error instanceof Error ? error.message : "Internal Server Error";
     return NextResponse.json(
-      { success: false, message: error.message || "Internal Server Error" },
+      { success: false, message },
       { status: 500 }
     );
   }

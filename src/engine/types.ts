@@ -143,6 +143,7 @@ export interface InsurerPackage {
   optionalCovers: OptionalCover[];
   specialFeatures: string[];
   keyExclusions: string[];
+  effectiveDate?: string;
 }
 
 // =============================================

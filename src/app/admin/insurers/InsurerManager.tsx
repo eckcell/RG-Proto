@@ -9,6 +9,7 @@ interface Insurer {
   fullName: string;
   logoPath: string;
   active: boolean;
+  description?: string;
 }
 
 export default function InsurerManager() {
@@ -67,7 +68,7 @@ export default function InsurerManager() {
       name: insurer.name,
       fullName: insurer.fullName,
       logoPath: insurer.logoPath,
-      description: (insurer as any).description || "",
+      description: insurer.description || "",
     });
   };
 

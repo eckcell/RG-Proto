@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fnbProfileSchema, type FnbProfileInput } from "@/engine/schema";
@@ -53,7 +53,7 @@ export function FnbProfileForm({ onComplete, isSubmitting = false }: Props) {
     watch,
     trigger,
     clearErrors,
-    formState: { errors, touchedFields, isSubmitted },
+    formState: { errors, isSubmitted: _isSubmitted },
   } = form;
 
 

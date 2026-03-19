@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { QuoteComparison } from "@/components/quote/QuoteComparison";
 import { comparePackages } from "@/engine/comparator";
-import type { FnbBusinessProfile, WicaEmployeeInput } from "@/engine/types";
+import type { FnbBusinessProfile } from "@/engine/types";
 import styles from "@/app/page.module.css";
 
 export const metadata = {
@@ -24,7 +24,12 @@ export default async function ComparePage({
   }
 
   // Parse `wicaEmployees` from search parameters if available
-  let parsedWicaEmployees: Record<string, any>[] = [];
+  interface EmployeeParam {
+    occupationClass: string;
+    annualWage: number;
+    headcount: number;
+  }
+  let parsedWicaEmployees: EmployeeParam[] = [];
   if (typeof params.wicaEmployees === "string") {
     try {
       parsedWicaEmployees = JSON.parse(params.wicaEmployees);

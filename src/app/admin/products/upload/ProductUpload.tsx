@@ -3,13 +3,33 @@
 import { useState, useEffect } from "react";
 import styles from "./upload.module.css";
 
+interface Insurer {
+  id: string;
+  name: string;
+}
+
+interface DryRunResult {
+  leadId: string;
+  company: string;
+  success: boolean;
+  premium: number | null;
+  error?: string;
+}
+
+interface DryRunResponse {
+  success: boolean;
+  message?: string;
+  results?: DryRunResult[];
+  error?: string;
+}
+
 export default function ProductUpload() {
-  const [insurers, setInsurers] = useState<any[]>([]);
+  const [insurers, setInsurers] = useState<Insurer[]>([]);
   const [selectedInsurer, setSelectedInsurer] = useState("");
   const [productName, setProductName] = useState("");
   const [productCode, setProductCode] = useState("");
   const [jsonConfig, setJsonConfig] = useState("");
-  const [dryRunResults, setDryRunResults] = useState<any>(null);
+  const [dryRunResults, setDryRunResults] = useState<DryRunResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [simulating, setSimulating] = useState(false);
 
@@ -34,10 +54,11 @@ export default function ProductUpload() {
           insurerName: insurers.find(i => i.id === selectedInsurer)?.name || "Test Insurer"
         }),
       });
-      const data = await res.json();
+      const data = (await res.json()) as DryRunResponse;
       setDryRunResults(data);
-    } catch (err: any) {
-      alert("Simulation failed: " + err.message);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Simulation failed";
+      alert("Simulation failed: " + message);
     } finally {
       setSimulating(false);
     }
@@ -131,7 +152,7 @@ export default function ProductUpload() {
           
           <button 
             onClick={handleSave} 
-            disabled={loading || (dryRunResults && !dryRunResults.success)}
+            disabled={loading || !!(dryRunResults && !dryRunResults.success)}
             className={styles.saveBtn}
           >
             {loading ? "Saving..." : "Commit to Production"}
@@ -145,14 +166,17 @@ export default function ProductUpload() {
           <p className={styles.summary}>{dryRunResults.success ? "✅ No regressions found." : "❌ Simulation detected issues."}</p>
           
           <div className={styles.leadResults}>
-            {dryRunResults.results?.map((r: any) => (
-              <div key={r.leadId} className={styles.leadRow}>
-                <span>{r.company}</span>
-                <span className={r.success ? styles.successText : styles.errorText}>
-                  {r.success ? `Success ($${(r.premium/100).toFixed(2)})` : `Error: ${r.error}`}
-                </span>
-              </div>
-            ))}
+            {dryRunResults.results?.map((r) => {
+              const statusClass = r.success ? styles.successText : styles.errorText;
+              return (
+                <div key={r.leadId} className={styles.leadRow}>
+                  <span>{r.company}</span>
+                  <span className={statusClass}>
+                    {r.success ? `Success ($${r.premium ? (r.premium/100).toFixed(2) : "0.00"})` : `Error: ${r.error}`}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

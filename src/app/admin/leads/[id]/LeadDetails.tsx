@@ -4,8 +4,28 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./lead-details.module.css";
 
+import { PackageQuoteResult } from "@/engine/types";
+
+interface Lead {
+  id: string;
+  companyName: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  uen: string;
+  businessType: string;
+  additionalEmployees: number;
+  status: string;
+  internalNotes: string | null;
+  quoteData: string;
+}
+
+interface QuoteData {
+  quotes: PackageQuoteResult[];
+}
+
 export default function LeadDetails({ id }: { id: string }) {
-  const [lead, setLead] = useState<any>(null);
+  const [lead, setLead] = useState<Lead | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState("");
@@ -50,7 +70,7 @@ export default function LeadDetails({ id }: { id: string }) {
   if (loading) return <div>Loading lead details...</div>;
   if (!lead) return <div>Lead not found.</div>;
 
-  const quoteData = JSON.parse(lead.quoteData);
+  const quoteData: QuoteData = JSON.parse(lead.quoteData);
 
   return (
     <div className={styles.container}>
@@ -78,7 +98,7 @@ export default function LeadDetails({ id }: { id: string }) {
           <section className={styles.section}>
             <h3>Quote Comparison</h3>
             <div className={styles.quoteList}>
-              {quoteData.quotes?.map((q: any, idx: number) => (
+              {quoteData.quotes?.map((q: PackageQuoteResult, idx: number) => (
                 <div key={idx} className={styles.quoteRow}>
                   <div className={styles.quoteRowContent}>
                     <div className={styles.quoteMain}>
@@ -92,7 +112,7 @@ export default function LeadDetails({ id }: { id: string }) {
                   
                   {q.coverageSummary && Object.keys(q.coverageSummary).length > 0 && (
                     <div className={styles.coverageGrid}>
-                      {Object.entries(q.coverageSummary).map(([key, value]: [string, any]) => (
+                      {Object.entries(q.coverageSummary).map(([key, value]: [string, string | number | boolean]) => (
                         <div key={key} className={styles.coverageItem}>
                           <span className={styles.coverageLabel}>
                             {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}

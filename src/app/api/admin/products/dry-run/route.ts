@@ -1,16 +1,15 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
 import { calculatePackageQuote } from "@/engine/calculators/calculatePackage";
+import { InsurerPackage, FnbBusinessProfile, PackageTier } from "@/engine/types";
 import { z } from "zod";
 
 const insurerPackageSchema = z.object({
   insurerId: z.string(),
   productName: z.string(),
-  tiers: z.array(z.any()),
-  topUpRates: z.record(z.string(), z.any()),
-  optionalCovers: z.array(z.any()),
+  tiers: z.array(z.unknown()),
+  topUpRates: z.record(z.string(), z.unknown()),
+  optionalCovers: z.array(z.unknown()),
   specialFeatures: z.array(z.string()),
   keyExclusions: z.array(z.string()),
 });
@@ -58,20 +57,28 @@ export async function POST(req: Request) {
           wicaEmployees: [],
         };
 
-        const calc = calculatePackageQuote(pkg as any, tier, insurerName, "", mockProfile as any);
+        const calc = calculatePackageQuote(
+          pkg as unknown as InsurerPackage, 
+          tier as unknown as PackageTier, 
+          insurerName, 
+          "", 
+          mockProfile as unknown as FnbBusinessProfile
+        );
+        
         return {
           leadId: lead.id,
           company: lead.companyName,
           success: calc.success,
           premium: calc.success ? calc.quote.totalPremiumCents : null,
-          error: calc.success ? null : (calc as any).error
+          error: calc.success ? null : String(calc.error)
         };
-      } catch (e: any) {
+      } catch (e) {
+        const message = e instanceof Error ? e.message : "Calculation failed";
         return {
           leadId: lead.id,
           company: lead.companyName,
           success: false,
-          error: e.message
+          error: message
         };
       }
     });
@@ -83,7 +90,7 @@ export async function POST(req: Request) {
       results
     });
 
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof z.ZodError) {
       console.error("Dry-run validation error:", error.issues);
       return NextResponse.json({ 
@@ -91,10 +98,11 @@ export async function POST(req: Request) {
         error: "Schema validation failed: " + error.issues.map((e: z.ZodIssue) => `${e.path.join('.')}: ${e.message}`).join(', ')
       }, { status: 400 });
     }
+    const message = error instanceof Error ? error.message : "An unexpected error occurred during dry run";
     console.error("Dry-run unexpected error:", error);
     return NextResponse.json({ 
       success: false, 
-      error: error.message || "An unexpected error occurred during dry run"
+      error: message
     }, { status: 500 });
   }
 }
