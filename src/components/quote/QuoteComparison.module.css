@@ -1,11 +1,25 @@
 .comparisonContainer {
   width: 100%;
-  max-width: 1400px; /* Wider to accommodate sidebar */
+  max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 2rem;
   align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .comparisonContainer {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .sidebar {
+    position: static;
+    top: 0;
+    margin-bottom: 0;
+  }
 }
 
 /* Sidebar styling */
@@ -107,6 +121,12 @@
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .quoteCard {
+    grid-template-columns: 1fr;
+  }
+}
+
 .quoteCard:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
@@ -134,7 +154,6 @@
 
 .cardHeader {
   padding: 1.5rem;
-  /* Remove border, let it flow into center section */
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -143,6 +162,14 @@
   align-items: center;
   text-align: center;
   border-right: 1px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+  .cardHeader {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    padding: 2rem 1rem;
+  }
 }
 
 .insurerLogo {
@@ -188,6 +215,14 @@
   border-left: 1px solid var(--color-border);
 }
 
+@media (max-width: 768px) {
+  .premiumBox {
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    background: #ffffff;
+  }
+}
+
 .premiumAmount {
   font-size: 2rem;
   font-weight: 800;
@@ -216,6 +251,29 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-bottom: 1rem;
+}
+
+@media (max-width: 480px) {
+  .metricsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .metricItem {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px dashed #e2e8f0;
+    padding-bottom: 0.5rem;
+  }
+
+  .metricLabel {
+    order: 1;
+  }
+
+  .metricValue {
+    order: 2;
+  }
 }
 
 .metricItem {
@@ -390,10 +448,45 @@
   font-size: 1.1rem;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .header {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    align-items: stretch;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .headerActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .headerActions > select,
+  .headerActions > button {
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* Mobile Filter Toggle */
+.mobileFilterBar {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .mobileFilterBar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .sidebar.showMobile {
+    display: block;
+    margin-bottom: 1rem;
   }
 }

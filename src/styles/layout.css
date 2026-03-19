@@ -38,8 +38,9 @@
 }
 
 .header-logo img {
-  height: 36px;
+  height: 90px;
   width: auto;
+  max-width: 100%;
 }
 
 .header-nav {
@@ -158,6 +159,6 @@
   }
 
   .header-logo img {
-    height: 36px;
+    height: 90px;
   }
 }

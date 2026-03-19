@@ -43,10 +43,9 @@ export default function RootLayout({
                 <Image
                   src="/logo.png"
                   alt="RiskGuard Insurance Brokers"
-                  width={180}
-                  height={48}
+                  width={338}
+                  height={90}
                   priority
-                  style={{ height: "auto" }}
                 />
               </Link>
               <nav className="header-nav">

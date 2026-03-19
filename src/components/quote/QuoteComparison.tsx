@@ -23,6 +23,7 @@ export function QuoteComparison({ comparison, leadId }: Props) {
   const [selectedInsurers, setSelectedInsurers] = useState<string[]>([]);
   const [showBestValueOnly, setShowBestValueOnly] = useState(false);
   const [isApplying, setIsApplying] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -134,7 +135,16 @@ export function QuoteComparison({ comparison, leadId }: Props) {
 
   return (
     <div className={styles.comparisonContainer}>
-      <aside className={styles.sidebar}>
+      <div className={styles.mobileFilterBar}>
+        <button 
+          className={styles.btnSecondary} 
+          onClick={() => setShowFilters(!showFilters)}
+        >
+          {showFilters ? "Hide Filters" : "Show Filters / Refine Results"}
+        </button>
+      </div>
+
+      <aside className={`${styles.sidebar} ${showFilters ? styles.showMobile : ""}`}>
         <h3>Refine Results</h3>
         <div className={styles.filterGroup}>
           <label className={styles.filterTitle}>Insurers</label>
