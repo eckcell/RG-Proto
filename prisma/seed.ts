@@ -111,7 +111,7 @@ async function main() {
       id: "msig",
       name: "MSIG",
       fullName: "MSIG Insurance (Singapore) Pte. Ltd.",
-      logoPath: "/logos/msig.png",
+      logoPath: "/insurers/msig-1773549795559.webp",
       products: [
         {
           name: "CafeCare",
@@ -146,7 +146,7 @@ async function main() {
       id: "eq",
       name: "EQ Insurance",
       fullName: "EQ Insurance Company Limited",
-      logoPath: "/logos/eq.png",
+      logoPath: "/insurers/eq-1773549775357.webp",
       products: [
         {
           name: "EQ Business Plus",

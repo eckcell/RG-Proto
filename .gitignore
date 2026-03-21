@@ -50,3 +50,6 @@ next-env.d.ts
 /reference
 
 /src/generated/prisma
+/lint_results.txt
+/lint_report.json
+/lint_output.txt

@@ -122,3 +122,205 @@
   font-size: 0.75rem;
   color: #64748b;
 }
+
+/* Guided Editor Specific Styles */
+.guidedEditor {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  background: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.sideNavBtn {
+  text-align: left;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: transparent;
+  width: 100%;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #475569;
+  transition: all 0.2s;
+}
+
+.sideNavBtn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.sideNavBtn.active {
+  background: #eff6ff;
+  color: #2563eb;
+  border-right: 3px solid #2563eb;
+  font-weight: 600;
+}
+
+.sidebarFooter {
+  margin-top: auto;
+  padding: 1rem 1.5rem;
+}
+
+.saveBtn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.saveBtn:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.saveBtn:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background: white;
+}
+
+.section {
+  max-width: 800px;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 2rem;
+}
+
+.formGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fieldGroup label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.input, .textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.input:focus, .textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.tierCard {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.tierHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.tierHeader h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.removeBtn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.removeBtn:hover {
+  background: #fecaca;
+  color: #b91c1c;
+}
+
+.addBtn {
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: #2563eb;
+  border: 1px dashed #2563eb;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+  transition: all 0.2s;
+}
+
+.addBtn:hover {
+  background: #eff6ff;
+}
+
+/* Base Coverage specific row layout */
+.coverageRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  background: white;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+.listInputGroup {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.listInputGroup .input {
+  flex: 1;
+}
