@@ -1,23 +1,47 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { FnbProfileForm } from "@/components/forms/FnbProfileForm";
-import type { FnbProfileInput } from "@/engine/schema";
+import { useState, useEffect } from "react";
+import { DynamicProfileForm } from "@/components/forms/DynamicProfileForm";
 import styles from "./QuoteContainer.module.css";
 
 export function QuoteContainer() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [template, setTemplate] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleFormComplete = async (data: FnbProfileInput) => {
+  useEffect(() => {
+    async function fetchTemplate() {
+      try {
+        const res = await fetch("/api/templates/fnb");
+        if (!res.ok) throw new Error("Template not found");
+        const data = await res.json();
+        setTemplate({
+            ...data,
+            config: JSON.parse(data.config)
+        });
+      } catch (err) {
+        console.error("Failed to fetch template:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchTemplate();
+  }, []);
+
+  const handleFormComplete = async (data: any) => {
     setIsSubmitting(true);
     try {
       // 1. Post to lead capture API
+      // Note: The API now needs to handle dynamic 'profileData'
       const response = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+            ...data,
+            industrySlug: "fnb" // Hardcoded for now
+        }),
       });
 
       if (!response.ok) {
@@ -26,15 +50,11 @@ export function QuoteContainer() {
       }
 
       // 2. Build query parameters string
-      const params = new URLSearchParams({
-        companyName: data.companyName,
-        uen: data.uen,
-        businessType: data.businessType,
-        additionalEmployees: data.additionalEmployees.toString(),
-        additionalSumInsured: data.additionalSumInsured.toString(),
-        additionalPlLimit: data.additionalPlLimit.toString(),
-        additionalPaPersons: data.additionalPaPersons.toString(),
-        wicaRequired: data.wicaRequired.toString(),
+      const params = new URLSearchParams();
+      Object.entries(data).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+              params.append(key, typeof value === 'object' ? JSON.stringify(value) : String(value));
+          }
       });
 
       // Capture leadId if it was returned
@@ -43,39 +63,34 @@ export function QuoteContainer() {
         params.append("leadId", resJson.leadId);
       }
 
-      // Optionally serialize wicaEmployees if present
-      if (data.wicaEmployees && data.wicaEmployees.length > 0) {
-        params.append("wicaEmployees", JSON.stringify(data.wicaEmployees));
-      }
-
       // 3. Redirect to the standalone comparison route
       router.push(`/quote/compare?${params.toString()}`);
     } catch (error) {
       console.error("Submission error:", error);
-      
-      let displayMessage = "Something went wrong while capturing your details. Please try again.";
-      
-      if (error instanceof Error && error.message && error.message !== "Unable to process your request") {
-        displayMessage = `Submission failed: ${error.message}`;
-      }
-      
-      alert(displayMessage);
+      alert("Submission failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  if (loading) return <div className={styles.loading}>Loading form...</div>;
+  if (!template) return <div className={styles.error}>Failed to load industry template.</div>;
+
   return (
     <div className={styles.container}>
       <div className={styles.formView}>
         <div className={styles.intro}>
-          <h1>Get Your Business Insurance Quotes</h1>
+          <h1>Get Your {template.industry.name} Insurance Quotes</h1>
           <p>
-            Fill out your business profile to compare F&B package premiums
+            Fill out your business profile to compare package premiums
             across multiple leading insurers in Singapore.
           </p>
         </div>
-        <FnbProfileForm onComplete={handleFormComplete} isSubmitting={isSubmitting} />
+        <DynamicProfileForm 
+          config={template.config} 
+          onComplete={handleFormComplete} 
+          isSubmitting={isSubmitting} 
+        />
       </div>
     </div>
   );

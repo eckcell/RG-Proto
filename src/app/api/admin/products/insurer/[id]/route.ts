@@ -5,19 +5,17 @@ import { authOptions } from "@/lib/auth";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ insurerId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  /*
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  */
 
-  const { insurerId } = await params;
+  const { id } = await params;
 
   const products = await prisma.product.findMany({
-    where: { insurerId },
+    where: { insurerId: id },
     orderBy: { name: "asc" },
   });
 
@@ -26,22 +24,20 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ insurerId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  /*
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  */
 
-  const { insurerId } = await params;
+  const { id } = await params;
   const body = await req.json();
 
   try {
     const newProduct = await prisma.product.create({
       data: {
-        insurerId,
+        insurerId: id,
         name: body.name,
         productCode: body.productCode,
         configuration: body.configuration, // Should be stringified JSON

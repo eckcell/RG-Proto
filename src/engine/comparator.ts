@@ -12,8 +12,9 @@ import type {
   PackageComparison,
   PackageQuoteResult,
   PackageCalculatorResult,
+  InsurerPackage,
 } from "@/engine/types";
-import { getPackages, getInsurerById } from "@/data/loader";
+import { prisma } from "@/lib/prisma";
 import { calculatePackageQuote } from "@/engine/calculators/calculatePackage";
 
 /**
@@ -40,18 +41,40 @@ function isTierEligible(tierId: string, tierName: string, tierDesc: string, busi
 }
 
 /**
- * Compare packages across all insurers for a given F&B business profile.
+ * Compare packages across all insurers for a given industry and profile.
  */
 export async function comparePackages(
-  profile: FnbBusinessProfile
+  profile: any,
+  industrySlug: string = "fnb"
 ): Promise<PackageComparison> {
-  const allPackages = await getPackages();
+  // 1. Fetch industry first to get ID
+  const industry = await (prisma as any).industry.findUnique({
+    where: { slug: industrySlug }
+  });
+
+  if (!industry) {
+    return {
+      businessType: industrySlug,
+      quotes: [],
+      sortedByPremium: [],
+    };
+  }
+
+  // 2. Fetch products for this industry
+  const products = await (prisma as any).product.findMany({
+    where: { 
+        industryId: industry.id,
+        active: true 
+    },
+    include: { insurer: true }
+  });
+
   const quotes: PackageQuoteResult[] = [];
 
-  for (const pkg of allPackages) {
-    const insurer = await getInsurerById(pkg.insurerId);
-    const insurerName = insurer?.name ?? pkg.insurerId;
-    const insurerLogoPath = insurer?.logoPath || "";
+  for (const prod of products) {
+    const pkg: InsurerPackage = JSON.parse(prod.configuration);
+    const insurerName = prod.insurer?.name || "Unknown";
+    const insurerLogoPath = prod.insurer?.logoPath || "";
 
     for (const tier of pkg.tiers) {
       if (
@@ -82,7 +105,7 @@ export async function comparePackages(
   );
 
   return {
-    businessType: profile.businessType,
+    businessType: profile.businessType || industrySlug,
     quotes,
     sortedByPremium,
   };
@@ -94,15 +117,16 @@ export async function comparePackages(
 export async function getAvailablePackagesForType(
   businessType: string
 ): Promise<Array<{ insurerId: string; productName: string; tierName: string; basePremiumCents: number | null }>> {
-  const allPackages = await getPackages();
-  const available: Array<{
-    insurerId: string;
-    productName: string;
-    tierName: string;
-    basePremiumCents: number | null;
-  }> = [];
+  const products = await (prisma as any).product.findMany({
+    where: { 
+        industry: { slug: "fnb" }, // Fallback for this legacy function
+        active: true 
+    }
+  });
 
-  for (const pkg of allPackages) {
+  const available: any[] = [];
+  for (const pkgObj of products) {
+    const pkg: InsurerPackage = JSON.parse(pkgObj.configuration);
     for (const tier of pkg.tiers) {
       if (isTierEligible(tier.id, tier.name, tier.description, businessType)) {
         available.push({
@@ -114,6 +138,8 @@ export async function getAvailablePackagesForType(
       }
     }
   }
+
+  return available;
 
   return available;
 }

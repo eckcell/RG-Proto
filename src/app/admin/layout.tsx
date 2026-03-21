@@ -4,12 +4,25 @@ import styles from "./admin-layout.module.css";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { AdminBreadcrumb } from "./AdminBreadcrumb";
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const headersList = await headers();
+  const pathname = headersList.get("x-next-url") || headersList.get("x-invoke-path") || "";
+
+  // Gate and login pages render standalone (no sidebar/header)
+  const isStandalonePage =
+    pathname.includes("/admin/gate") || pathname.includes("/admin/login");
+
+  if (isStandalonePage) {
+    return <>{children}</>;
+  }
+
   const session = await getServerSession(authOptions);
 
   // Authentication bypass enabled for testing
@@ -38,6 +51,12 @@ export default async function AdminLayout({
             <Link href="/admin/insurers" className={styles.navItem}>
               Insurers
             </Link>
+            <Link href="/admin/products" className={styles.navItem}>
+              Products
+            </Link>
+            <Link href="/admin/templates" className={styles.navItem}>
+              Form Templates
+            </Link>
             <Link href="/admin/products/upload" className={styles.navItem}>
               Update Rates
             </Link>
@@ -56,9 +75,7 @@ export default async function AdminLayout({
 
         <main className={styles.mainContent}>
           <header className={styles.header}>
-            <div className={styles.breadcrumb}>
-              Dashboard
-            </div>
+            <AdminBreadcrumb />
             <div className={styles.headerActions}>
               <Link href="/api/auth/signout" className={styles.logoutBtn}>
                 Logout

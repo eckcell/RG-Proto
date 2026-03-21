@@ -71,7 +71,7 @@ export default function ProductUpload() {
 
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/products/${selectedInsurer}`, {
+      const res = await fetch(`/api/admin/products/insurer/${selectedInsurer}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

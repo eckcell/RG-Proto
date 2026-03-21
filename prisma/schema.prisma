@@ -35,10 +35,34 @@ model Insurer {
   updatedAt   DateTime  @updatedAt
 }
 
+model Industry {
+  id          String    @id @default(uuid())
+  name        String    @unique // e.g., "Food & Beverage", "Retail", "Office"
+  slug        String    @unique // e.g., "fnb", "retail", "office"
+  active      Boolean   @default(true)
+  products    Product[]
+  templates   FormTemplate[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model FormTemplate {
+  id          String    @id @default(uuid())
+  name        String
+  industryId  String
+  industry    Industry  @relation(fields: [industryId], references: [id])
+  config      String    // JSON configuration of steps and fields
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
 model Product {
   id            String   @id @default(uuid())
   insurerId     String
   insurer       Insurer  @relation(fields: [insurerId], references: [id])
+  industryId    String?
+  industry      Industry? @relation(fields: [industryId], references: [id])
   name          String
   productCode   String
   configuration String   // JSON blob of tiers/rates
@@ -52,11 +76,11 @@ model Lead {
   id                  String   @id @default(uuid())
   companyName         String
   uen                 String
-  businessType        String
-  additionalEmployees Int?
+  businessType        String   // Shorthand/Slug from the form
   contactName         String
   contactEmail        String
   contactPhone        String
+  profileData         String?  // NEW: JSON string for dynamic form answers
   quoteData           String   // JSON string of quote results
   status              String   @default("NEW")
   selectedInsurer     String?

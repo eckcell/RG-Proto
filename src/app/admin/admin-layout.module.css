@@ -103,8 +103,30 @@
 }
 
 .breadcrumb {
-  font-weight: var(--font-weight-semibold);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+}
+
+.breadcrumb a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.separator {
+  color: var(--color-text-muted);
+}
+
+.current {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
 }
 
 .logoutBtn {

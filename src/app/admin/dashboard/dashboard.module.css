@@ -75,12 +75,50 @@
 
 .activityCard {
   background: var(--color-surface);
-  padding: var(--space-12);
+  padding: var(--space-4);
   border-radius: var(--radius-xl);
-  border: 1px dashed var(--color-border);
-  text-align: center;
+  border: 1px solid var(--color-border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-bg);
+}
+
+.table td {
+  padding: var(--space-4);
+  font-size: var(--font-size-sm);
+  border-bottom: 1px solid var(--color-bg);
+}
+
+.statusBadge {
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    background: var(--color-bg);
+}
+
+.statusBadge.new { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+.statusBadge.contacted { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.statusBadge.closed { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+
+.badgeRed {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
 }
 
 .emptyState {
   color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-12);
 }

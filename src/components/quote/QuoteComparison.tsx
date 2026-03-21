@@ -71,7 +71,8 @@ export function QuoteComparison({ comparison, leadId }: Props) {
         `Please advise on next steps.`
       );
 
-      const whatsappUrl = `https://wa.me/83898636?text=${message}`;
+      const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "83898636";
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
       window.open(whatsappUrl, "_blank");
 
     } catch (error) {
@@ -87,19 +88,49 @@ export function QuoteComparison({ comparison, leadId }: Props) {
     try {
       setIsExporting(true);
       const canvas = await html2canvas(gridRef.current, {
-        scale: 1.5,
+        scale: 2,
         useCORS: true,
-        allowTaint: true
+        allowTaint: true,
+        backgroundColor: "#f9fafb"
       });
-      const imgData = canvas.toDataURL("image/jpeg", 0.7);
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
       const pdf = new jsPDF("p", "mm", "a4");
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-      pdf.addImage(imgData, "JPEG", 0, 10, pdfWidth, pdfHeight, undefined, "FAST");
-      pdf.text("Indicative Quotes (Not Financial Advice)", 10, 8);
-      pdf.save(`Quotations_${comparison.businessType}_RiskGuard.pdf`);
+      // Header with Logo
+      pdf.setFillColor(15, 48, 87); // Primary blue
+      pdf.rect(0, 0, pdfWidth, 40, "F");
+      
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(22);
+      pdf.text("RiskGuard Compare", 15, 20);
+      pdf.setFontSize(10);
+      pdf.text("Professional Insurance Solutions", 15, 28);
+      
+      pdf.setFontSize(10);
+      pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, pdfWidth - 15, 20, { align: "right" });
+      pdf.text(`Business Type: ${comparison.businessType}`, pdfWidth - 15, 28, { align: "right" });
+
+      // The comparison grid
+      pdf.addImage(imgData, "JPEG", 0, 45, pdfWidth, pdfHeight, undefined, "FAST");
+
+      // Footer
+      const totalPages = pdf.getNumberOfPages();
+      for (let i = 1; i <= totalPages; i++) {
+          pdf.setPage(i);
+          pdf.setFontSize(8);
+          pdf.setTextColor(150, 150, 150);
+          pdf.text(
+              "Disclaimer: These are indicative quotes only and do not constitute financial advice. Final premiums are subject to insurer's underwriters.",
+              pdfWidth / 2,
+              pdf.internal.pageSize.height - 10,
+              { align: "center" }
+          );
+      }
+
+      pdf.save(`RiskGuard_Quotes_${comparison.businessType.replace(/\s+/g, '_')}.pdf`);
     } catch (error) {
       console.error("PDF generation failed", error);
     } finally {

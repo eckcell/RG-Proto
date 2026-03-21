@@ -10,66 +10,42 @@ import { comparePackages } from "@/engine/comparator";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    const { industrySlug, ...profileData } = body;
 
-    // 1. Validate payload using the Zod schema
-    const parsedData = fnbProfileSchema.parse(body);
-
+    // 1. Prepare profile for calculation (generic enough for now)
     const profile = {
-      ...parsedData,
-      additionalSumInsuredCents: (parsedData.additionalSumInsured || 0) * 100,
-      additionalPlLimitCents: (parsedData.additionalPlLimit || 0) * 100,
-      additionalDailyBenefitCents: 0,
-      wicaEmployees: parsedData.wicaEmployees?.map(emp => ({
+      ...profileData,
+      additionalSumInsuredCents: (profileData.additionalSumInsured || 0) * 100,
+      additionalPlLimitCents: (profileData.additionalPlLimit || 0) * 100,
+      wicaEmployees: profileData.wicaEmployees?.map((emp: any) => ({
         ...emp,
         annualWageCents: emp.annualWage * 100,
       })) || [],
     };
 
-    // 2. Generate quotes
-    const quotes = await comparePackages(profile); // cast for now to avoid deep type nesting issues
+    // 2. Generate quotes based on industry
+    const quotes = await comparePackages(profile, industrySlug || "fnb");
     const quotesJsonString = JSON.stringify(quotes);
 
-    // 3. Save lead to PostgreSQL / SQLite database via Prisma
+    // 3. Save lead to database
     let leadId: string | undefined;
     try {
-      const newLead = await prisma.lead.create({
+      const newLead = await (prisma as any).lead.create({
         data: {
-          companyName: parsedData.companyName,
-          uen: parsedData.uen,
-          businessType: parsedData.businessType,
-          additionalEmployees: parsedData.additionalEmployees,
-          contactName: parsedData.contactName,
-          contactEmail: parsedData.contactEmail,
-          contactPhone: parsedData.contactPhone,
+          companyName: profileData.companyName || "Unknown",
+          uen: profileData.uen || "N/A",
+          businessType: profileData.businessType || "N/A",
+          contactName: profileData.contactName || "Contact Requested",
+          contactEmail: profileData.contactEmail || "",
+          contactPhone: profileData.contactPhone || "",
           quoteData: quotesJsonString,
+          profileData: JSON.stringify(profileData)
         },
       });
       leadId = newLead.id;
     } catch (dbError) {
-      const errorMessage = dbError instanceof Error ? dbError.message : "Unknown database error";
-      console.error("Database save failed (expected on Vercel with SQLite):", errorMessage);
-      // We continue here so the user can still see their results
+      console.error("Database save failed:", dbError);
     }
-
-    // 4. Email Dispatch (Placeholder for actual Resend Integration)
-    // Uncomment when RESEND_API_KEY is configured.
-    /*
-    if (process.env.RESEND_API_KEY) {
-      await resend.emails.send({
-        from: "RiskGuard Compare <onboarding@resend.dev>",
-        to: [parsedData.contactEmail],
-        subject: "Your SME Insurance Indicative Quotations",
-        html: `
-          <h1>Hi ${parsedData.contactName},</h1>
-          <p>Thank you for requesting insurance quotes for ${parsedData.companyName}.</p>
-          <p>Your customised comparisons are ready. You can view the details online or check the attached file.</p>
-          <br>
-          <p>Best regards,<br>The RiskGuard Team</p>
-        `,
-      });
-    }
-    */
-    console.log(`Email effectively sent to ${parsedData.contactEmail}`);
 
     return NextResponse.json(
       { success: true, leadId, quotes },
@@ -77,24 +53,7 @@ export async function POST(req: Request) {
     );
   } catch (error) {
     console.error("API Error creating Lead:", error);
-    
-    // Check if it's a Zod validation error
-    if (error && typeof error === "object" && ("name" in error && error.name === "ZodError" || "issues" in error)) {
-      const issues = (error as Record<string, unknown>).issues || (error as Record<string, unknown>).message;
-      return NextResponse.json(
-        { 
-          success: false, 
-          message: "Validation Error", 
-          details: issues 
-        },
-        { status: 400 }
-      );
-    }
-
     const message = error instanceof Error ? error.message : "Internal Server Error";
-    return NextResponse.json(
-      { success: false, message },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message }, { status: 500 });
   }
 }

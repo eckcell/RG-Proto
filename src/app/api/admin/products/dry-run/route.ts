@@ -13,14 +13,14 @@ const insurerPackageSchema = z.object({
   specialFeatures: z.array(z.string()),
   keyExclusions: z.array(z.string()),
 });
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
 export async function POST(req: Request) {
-  /*
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  */
 
   const { configuration, insurerName } = await req.json();
 
@@ -49,12 +49,19 @@ export async function POST(req: Request) {
         const tier = pkg.tiers[0]; 
         
         // Mocking profile for dry-run if lead data is partial
+        const profileData = lead.profileData ? JSON.parse(lead.profileData) : {};
+        
         const mockProfile = {
+          companyName: lead.companyName,
+          uen: lead.uen,
           businessType: lead.businessType,
-          additionalEmployees: lead.additionalEmployees || 0,
-          additionalSumInsured: 0,
-          additionalPlLimit: 0,
-          wicaEmployees: [],
+          additionalEmployees: profileData.additionalEmployees || 0,
+          additionalSumInsuredCents: profileData.additionalSumInsuredCents || 0,
+          additionalPlLimitCents: profileData.additionalPlLimitCents || 0,
+          additionalPaPersons: profileData.additionalPaPersons || 0,
+          additionalDailyBenefitCents: profileData.additionalDailyBenefitCents || 0,
+          wicaRequired: profileData.wicaRequired || false,
+          wicaEmployees: profileData.wicaEmployees || [],
         };
 
         const calc = calculatePackageQuote(
